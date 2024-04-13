@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:mnm/View/Drawer/IranDrawer.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 import 'package:mnm/Controller/Controller.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart' as pdp;
@@ -86,6 +88,7 @@ class _IrEmpState extends State<IrEmp> {
     double fullScreenHeight = MediaQuery.of(context).size.height;
     double fullScreenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+        drawer: const IranDrawer(),
         body: SingleChildScrollView(
       child: Container(
         height: fullScreenHeight,
@@ -103,21 +106,20 @@ class _IrEmpState extends State<IrEmp> {
                   height: 100,
                   child: Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 42.0),
-                        child: Builder(
-                          builder: (BuildContext context) {
-                            return IconButton(
-                              icon: const Icon(
-                                Icons.arrow_back,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            );
-                          },
-                        ),
+                      Builder(
+                        builder: (BuildContext context) {
+                          return IconButton(
+                            icon: const ImageIcon(
+                              AssetImage("assets/icon/menu.png",),
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -141,7 +143,7 @@ class _IrEmpState extends State<IrEmp> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         const Text(
-                          "اجناس      برای      ارسال",
+                          "ارسال      کردن     اجناس",
                           style: TextStyle(
                               fontSize: 25,
                               color: Colors.white,
@@ -303,58 +305,13 @@ class _IrEmpState extends State<IrEmp> {
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(20)),
                                         ),
-                                        hintText: "تعداد انواع اجناس",
+                                        hintText: "تعداد جنس",
                                         hintStyle: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
                                       ),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _numFields =
-                                              (int.tryParse(value) ?? 0) * 5;
-                                          while (itemControllers.length <
-                                              _numFields) {
-                                            itemControllers
-                                                .add(TextEditingController());
-                                          }
-                                          while (itemControllers.length >
-                                              _numFields) {
-                                            itemControllers
-                                                .removeLast()
-                                                .dispose();
-                                          }
-                                        });
-                                      },
-                                    ),
-                                    ...List.generate(
-                                      _numFields,
-                                      (index) {
-                                        return Column(
-                                          children: <Widget>[
-                                            const SizedBox(height: 10),
-                                            TextField(
-                                              controller:
-                                                  itemControllers[index],
-                                              textAlign: TextAlign.right,
-                                              decoration: InputDecoration(
-                                                border:
-                                                    const OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(20)),
-                                                ),
-                                                hintText: _hints[
-                                                    index % _hints.length],
-                                                hintStyle: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20),
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
+
                                     ),
                                     const SizedBox(
                                       height: 10,
@@ -504,6 +461,13 @@ class _IrEmpState extends State<IrEmp> {
 
   Future<void> newIranEmpSendItem() async {
     try {
+      Center(
+        child: LoadingAnimationWidget.inkDrop(
+          color: const Color.fromRGBO(
+              152, 116, 100, 1.0),
+          size: 50,
+        ),
+      );
       List<String> itemValues = [];
       for (TextEditingController controller in itemControllers) {
         itemValues.add(controller.text);
@@ -521,6 +485,31 @@ class _IrEmpState extends State<IrEmp> {
         'time': _selectedTime?.format(context),
         'items': itemValues, // Add this line
       });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Image.asset("assets/icon/check-mark.png",),
+            content: const  Text('موفقانه ذخیره شد', textAlign: TextAlign.center, style: TextStyle(color: Colors.black,fontSize: 20)),
+            actions: <Widget>[
+              Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  height: 50 ,
+                  width: 130,
+                  child: MaterialButton(
+                    color: Colors.green,
+                    child: const Text('باشه' ,style: TextStyle(color: Colors.white,fontSize: 25),),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
       print('Item added successfully');
     } catch (e) {
       print(e.toString());
@@ -543,11 +532,7 @@ class _IrEmpState extends State<IrEmp> {
         itemValues.add(controller.text);
       }
       // Get the last document in the 'waiting' collection
-      var lastDoc = await FirebaseFirestore.instance
-          .collection('waiting')
-          .orderBy('id', descending: true)
-          .limit(1)
-          .get();
+      var lastDoc = await FirebaseFirestore.instance.collection('waiting').orderBy('id', descending: true).limit(1).get();
 
       // If there are no documents yet, start with id 0. Otherwise, increment the last id by 1
       int i = lastDoc.docs.isEmpty ? 0 : lastDoc.docs.first.data()['id'] + 1;

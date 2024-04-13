@@ -179,7 +179,7 @@ class myMetaData extends StatelessWidget {
                                                       Row(
                                                         mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
-                                                          Text("تعداد انواع اجناس: ${snapshot.data?[index]['typeItemNumber']}",
+                                                          Text("تعداد جناس: ${snapshot.data?[index]['typeItemNumber']}",
                                                             style: const TextStyle(color: Colors.white, fontSize: 20, fontFamily: "Neirizi"),
                                                           ),
                                                         ],
@@ -190,52 +190,11 @@ class myMetaData extends StatelessWidget {
                                                       Row(
                                                         mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
-                                                          Text("نام کار: ${snapshot.data?[index]['items'][0]}", style: const TextStyle(color: Colors.white, fontSize: 20, fontFamily: "Neirizi"),
+                                                          Text("نام کار: ${snapshot.data?[index]['']}", style: const TextStyle(color: Colors.white, fontSize: 20, fontFamily: "Neirizi"),
                                                           ),
                                                         ],
                                                       ),
-                                                      const SizedBox(
-                                                        height: 11,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: [
-                                                          Text("زمینه رنگ: ${snapshot.data?[index]['items'][1]}",
-                                                            style: const TextStyle(color: Colors.white,fontSize: 20, fontFamily: "Neirizi"),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 11,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: [
-                                                          Text("سایز: ${snapshot.data?[index]['items'][2]}", style: const TextStyle(color: Colors.white, fontSize: 20, fontFamily: "Neirizi"),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 11,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: [
-                                                          Text("تراکم: ${snapshot.data?[index]['items'][3]}", style: const TextStyle(color: Colors.white, fontSize: 20, fontFamily: "Neirizi"),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 11,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: [
-                                                          Text("شانه: ${snapshot.data?[index]['items'][4]}",
-                                                            style: const TextStyle(color: Colors.white,fontSize: 20, fontFamily: "Neirizi"),
-                                                          ),
-                                                        ],
-                                                      ),
+
                                                       const SizedBox(
                                                         height: 11,
                                                       ),

@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:mnm/View/Drawer/AfgDrawer.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 import 'package:mnm/Controller/Controller.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart' as pdp;
@@ -46,9 +50,6 @@ class _ReciveDataState extends State<ReciveData> {
             .cast<String>();
     setState(() {});
   }
-
-  final TextEditingController _controller = TextEditingController();
-  final List<String> _hints = ['نام کار', 'زمینه رنگ', 'سایز', 'تراکم', 'شانه'];
   int _numFields = 0;
 
   DateTime? _selectedDate;
@@ -94,6 +95,7 @@ class _ReciveDataState extends State<ReciveData> {
     double fullScreenHeight = MediaQuery.of(context).size.height;
     double fullScreenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+        drawer: const AfgDrawer(),
         body: SingleChildScrollView(
       child: Container(
         height: fullScreenHeight,
@@ -111,21 +113,20 @@ class _ReciveDataState extends State<ReciveData> {
                   height: 100,
                   child: Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 42.0),
-                        child: Builder(
-                          builder: (BuildContext context) {
-                            return IconButton(
-                              icon: const Icon(
-                                Icons.arrow_back,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            );
-                          },
-                        ),
+                      Builder(
+                        builder: (BuildContext context) {
+                          return IconButton(
+                            icon: const ImageIcon(
+                              AssetImage("assets/icon/menu.png",),
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -240,24 +241,6 @@ class _ReciveDataState extends State<ReciveData> {
                                               Radius.circular(20)),
                                         ),
                                         hintText: "نمبر پلاک",
-                                        hintStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    TextField(
-                                      controller: controllerTypeItem,
-                                      textAlign: TextAlign.right,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                        ),
-                                        hintText: "نوع جنس",
                                         hintStyle: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -432,10 +415,9 @@ class _ReciveDataState extends State<ReciveData> {
                                           ),
                                           onChanged: (String? newValue) {
                                             setState(() {
-                                              controller.selectedWaiting =
-                                                  newValue;
-                                              controller
-                                                  .fetchShellData(newValue!);
+                                              controller.selectedWaiting = newValue;
+
+                                              controller.fetchShellData(newValue!);
                                             });
                                             print(
                                                 "${controller.selectedWaiting}");
@@ -456,131 +438,148 @@ class _ReciveDataState extends State<ReciveData> {
                                       height: 20,
                                     ),
                                     Container(
-                                      decoration: BoxDecoration(
-                                          color: const Color.fromRGBO(
-                                              152, 116, 100, 1.0),
-                                          borderRadius:
-                                              BorderRadius.circular(20.0)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8.0,
-                                            bottom: 5.0,
-                                            top: 5.0),
-                                        child: DropdownButton<String>(
-                                          value: controller.selectedWarehouse,
-                                          hint: const Center(
-                                            child: Text(
-                                              "انتخاب گدام",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20),
-                                            ),
+                                    decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(
+                                            152, 116, 100, 1.0),
+                                        borderRadius:
+                                            BorderRadius.circular(20.0)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0,
+                                          right: 8.0,
+                                          bottom: 5.0,
+                                          top: 5.0),
+                                      child: DropdownButton<String>(
+                                        value: controller.selectedWarehouse,
+                                        hint: const Center(
+                                          child: Text(
+                                            "انتخاب گدام",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20),
                                           ),
-                                          focusColor: Colors.white,
-                                          iconEnabledColor: Colors.white,
-                                          isExpanded: true,
-                                          icon:
-                                              const Icon(Icons.arrow_downward),
-                                          iconSize: 24,
-                                          elevation: 16,
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                          dropdownColor: const Color.fromRGBO(
-                                              152, 116, 100, 1.0),
-                                          underline: Container(
-                                            color: Colors.transparent,
-                                          ),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              controller.selectedWarehouse = newValue;
-                                              controller.fetchShellData(newValue!);
-                                            });
-                                            print(
-                                                "${controller.selectedWarehouse}");
-                                          },
-                                          items: controller.superMarketNames
-                                              .map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                            return DropdownMenuItem<String>(
-                                              alignment: Alignment.centerRight,
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
                                         ),
+                                        focusColor: Colors.white,
+                                        iconEnabledColor: Colors.white,
+                                        isExpanded: true,
+                                        icon:
+                                            const Icon(Icons.arrow_downward),
+                                        iconSize: 24,
+                                        elevation: 16,
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                        dropdownColor: const Color.fromRGBO(
+                                            152, 116, 100, 1.0),
+                                        underline: Container(
+                                          color: Colors.transparent,
+                                        ),
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            controller.selectedWarehouse = newValue;
+                                          });
+                                          controller.fetchShellData(newValue!);
+                                        },
+                                        items: controller.superMarketNames.map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                            alignment: Alignment.centerRight,
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 20,
                                     ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          color: const Color.fromRGBO(
-                                              152, 116, 100, 1.0),
-                                          borderRadius:
-                                              BorderRadius.circular(20.0)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8.0,
-                                            bottom: 5.0,
-                                            top: 5.0),
-                                        child: DropdownButton<String>(
-                                          value: controller.selectedShelf,
-                                          hint: const Center(
-                                            child: Text(
-                                              "انتخاب شلف",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20),
+                                    const SizedBox(
+                                    height: 20,
+                                    ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: const Color.fromRGBO(
+                                          152, 116, 100, 1.0),
+                                      borderRadius:
+                                      BorderRadius.circular(20.0)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0,
+                                        right: 8.0,
+                                        bottom: 5.0,
+                                        top: 5.0),
+                                    child: FutureBuilder(
+                                      future: controller.selectedWarehouse != null ? controller.fetchShellData(controller.selectedWarehouse!) : null,
+                                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                          return DropdownButton<String>(
+                                            value: controller.selectedShelf,
+                                            hint: const Center(
+                                              child: Text(
+                                                "انتخاب شلف",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20),
+                                              ),
                                             ),
-                                          ),
-                                          focusColor: Colors.white,
-                                          iconEnabledColor: Colors.white,
-                                          isExpanded: true,
-                                          icon:
-                                              const Icon(Icons.arrow_downward),
-                                          iconSize: 24,
-                                          elevation: 16,
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                          dropdownColor: const Color.fromRGBO(
-                                              152, 116, 100, 1.0),
-                                          underline: Container(
-                                            color: Colors.transparent,
-                                          ),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              controller.selectedShelf = newValue;
-                                            });
-                                          },
-                                          items: controller.shellNames.map<DropdownMenuItem<String>>((String value) {
-                                            return DropdownMenuItem<String>(
-                                              alignment: Alignment.centerRight,
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ),
+                                            focusColor: Colors.white,
+                                            iconEnabledColor: Colors.white,
+                                            isExpanded: true,
+                                            icon: const Icon(Icons.arrow_downward),
+                                            iconSize: 24,
+                                            elevation: 16,
+                                            style: const TextStyle(color: Colors.white),
+                                            dropdownColor: const Color.fromRGBO(152, 116, 100, 1.0),
+                                            underline: Container(
+                                              color: Colors.transparent,
+                                            ),
+                                            onChanged: (String? newValue) {
+                                              setState(() {
+                                                controller.selectedShelf = newValue;
+                                              });
+                                            },
+                                            items: controller.shellNames.map<DropdownMenuItem<String>>((String value) {
+                                                  return DropdownMenuItem<String>(
+                                                    alignment: Alignment.centerRight,
+                                                    value: value,
+                                                    child: Text(value),
+                                                  );
+                                                }).toList(),
+                                          );
+
+                                      },
                                     ),
-                                    const SizedBox(
+                                  ),
+                                ),
+
+
+                                const SizedBox(
                                       height: 20,
                                     ),
                                     MaterialButton(
                                       onPressed: () async {
-                                        // newIranEmpSendItem();
-                                        // waitIranEmpSendItem();
-                                        // receiveItems();
-
                                         if (controller.selectedShelf != null) {
-                                          // controller.showshellsNumber(controller.selectedShell!);
                                           receiveItems();
                                         } else {
-                                          print("select a shelf");
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text('خطا',textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 40)),
+                                                content: const  Text('لطفا یک شلف انتخاب کنید',textAlign: TextAlign.right,),
+                                                actions: <Widget>[
+                                                  Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: MaterialButton(
+                                                      color: Colors.red,
+                                                      child: const Text('باشه'),
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
                                         }
                                       },
                                       color: const Color.fromRGBO(
@@ -617,173 +616,170 @@ class _ReciveDataState extends State<ReciveData> {
     ));
   }
 
-
-
-
-
-
-
-
   Future<void> receiveItems() async {
-    // print(controller.selectedWarehouse);
+    print("1");
     int Cnumber = int.parse(controllerTypeItemNumber.text);
-
-
     int? WarehouseCapacity;
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     QuerySnapshot querySnapshot = await firestore.collection('Warehouse').where('Name', isEqualTo: controller.selectedWarehouse).get();
     querySnapshot.docs.forEach((doc) {
       var rs = doc['Number'];
-      if(rs is int) {
+      if (rs is int) {
         WarehouseCapacity = rs;
       } else {
         print('Error: Number is not an integer');
       }
     });
-
-
-    print('Warehouse: $WarehouseCapacity');
-    print(WarehouseCapacity.runtimeType);
+    print("2");
 
     final CollectionReference collectionReference = FirebaseFirestore.instance.collection('Shelf');
     var snapshots = await collectionReference.where('Warehouse', isEqualTo: controller.selectedWarehouse).get();
-    var shellNames = snapshots.docs.map((doc) =>
-    (doc.data() as Map<String, dynamic>)['Number'] as int?).where((item) => item != null).toList().cast<int>();
+    var shellNames = snapshots.docs.map((doc) => (doc.data() as Map<String, dynamic>)['Number'] as int?).where((item) => item != null).toList().cast<int>();
+    print("3");
     int? rs = shellNames.isNotEmpty ? shellNames[0] : null;
     int ShelfCapacity = rs ?? 0;
+    var lastDoc = await FirebaseFirestore.instance.collection('ReceiveFromIran').orderBy('id', descending: true).limit(1).get();
+
+    // If there are no documents yet, start with id 0. Otherwise, increment the last id by 1
+    int i = lastDoc.docs.isEmpty ? 0 : lastDoc.docs.first.data()['id'] + 1;
+    if (WarehouseCapacity! > 0 && ShelfCapacity > 0) {
 
 
-    print('Shells: $ShelfCapacity');
+      var collection = FirebaseFirestore.instance.collection('waiting');
+      var snapshot = await collection.get();
+      for (var doc in snapshot.docs) {
+        print("---------------------------------------");
+        print(doc.data()['typeItemNumber']);
+        print(doc.data()['typeItemNumber'].runtimeType);
 
-    print(ShelfCapacity.runtimeType);
+        int castnumber = int.parse(doc.data()['typeItemNumber']);
+        print("this is cast number = $castnumber");
+        print("this is C number = $Cnumber");
+        print("this is C number type = ${Cnumber}");
+        if(castnumber < Cnumber)
+          {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("خطای مقدار", textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 30)),
+                  content:   Text('تعداد موجود $castnumber عدد است ', textAlign: TextAlign.right, style: TextStyle(color: Colors.black,fontSize: 20)),
+                  actions: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: MaterialButton(
+                        color: Colors.green,
+                        child: const Text('باشه' ,style: TextStyle(color: Colors.white),),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        else{
+          try {
+            List<String> itemValues = [];
+            for (TextEditingController controller in itemControllers) {
+              itemValues.add(controller.text);
+            }
 
-     if (WarehouseCapacity! > 0 && ShelfCapacity > 0) {
-       try {
-             List<String> itemValues = [];
-             for (TextEditingController controller in itemControllers) {
-               itemValues.add(controller.text);
-             }
-             var lastDoc = await FirebaseFirestore.instance.collection('ReceiveFromIran').orderBy('id', descending: true).limit(1).get();
+            await FirebaseFirestore.instance.collection('ReceiveFromIran').add({
+              'id': i,
+              'item':controller.selectedWaiting,
+              'destinationName': controllerDestionationName.text,
+              'driverName': controllerDriverName.text,
+              'vehicle': controllerVehcle.text,
+              'vehicleTag': controllerVehcleTag.text,
+              'NumberItem': Cnumber,
+              'date': getShamsiDate(_selectedDate),
+              'time': _selectedTime?.format(context),
+              'Warehouse': controller.selectedWarehouse,
+              'Shelf': controller.selectedShelf,
+            });
+            print('Item added successfully');
+          } catch (e) {
+            print(e.toString());
+          }
+          // Update warehouse and shelf capacity
+          var querySnapshotW = await firestore.collection('Warehouse').where('Name', isEqualTo: controller.selectedWarehouse).get();
+          for (var doc in querySnapshotW.docs) {
+            doc.reference.update({'Number': FieldValue.increment(-Cnumber)});
+          }
 
-             // If there are no documents yet, start with id 0. Otherwise, increment the last id by 1
-             int i = lastDoc.docs.isEmpty ? 0 : lastDoc.docs.first.data()['id'] + 1;
+          var querySnapshot = await firestore.collection('Shelf').where('Warehouse', isEqualTo: controller.selectedWarehouse).get();
 
-             await FirebaseFirestore.instance.collection('ReceiveFromIran').add({
-               'id': i,
-               'destinationName': controllerDestionationName.text,
-               'driverName': controllerDriverName.text,
-               'vehicle': controllerVehcle.text,
-               'vehicleTag': controllerVehcleTag.text,
-               'NumberItem': Cnumber,
-               'date': getShamsiDate(_selectedDate),
-               'time': _selectedTime?.format(context),
-               'items': itemValues,
-               'Warehouse' : controller.selectedWarehouse,
-               'Shelf' : controller.selectedShelf,
-             });
-             print('Item added successfully');
-           } catch (e) {
-             print(e.toString());
-           }
-
-         // Update warehouse and shelf capacity
-          print(Cnumber.runtimeType);
-
-
-         var querySnapshot = await firestore.collection('Shelf').where('Name', isEqualTo: controller.selectedShelf).get();
-
-         for (var doc in querySnapshot.docs) {
-           doc.reference.update({
-             'Number': FieldValue.increment(-Cnumber)
-           });
-         }
-
-       var querySnapshotW = await firestore.collection('Warehouse').where('Name', isEqualTo: controller.selectedWarehouse).get();
-       for (var doc in querySnapshotW.docs) {
-         doc.reference.update({
-           'Number': FieldValue.increment(-Cnumber)
-         });
-       }
-
-       } else {
-         print('Not enough capacity');
-       }
-
-
-
-
-
-
-
-
-
-
-
-
-     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          for (var doc in querySnapshot.docs) {
+            doc.reference.update({'Number': FieldValue.increment(-Cnumber)});
+          }
+          // Delete data from 'watting' table
+          var waitingSnapshot = await firestore.collection('waiting').where('id', isEqualTo: i).get();
+          for (var doc in waitingSnapshot.docs) {
+            doc.reference.delete();
+            print("deleted");
+          }
+          setState(() {
+            fetchWarehouseData();
+            fetchWaitingData();
+          });
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: const  Text('موفقانه ذخیره شد', textAlign: TextAlign.right, style: TextStyle(color: Colors.black,fontSize: 20)),
+                actions: <Widget>[
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: MaterialButton(
+                      color: Colors.green,
+                      child: const Text('باشه' ,style: TextStyle(color: Colors.white),),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+          print("saved");
+        }
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('خطا',textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 40)),
+            content: const  Text('دوباره کوشش کنید',textAlign: TextAlign.right,),
+            actions: <Widget>[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: MaterialButton(
+                  color: Colors.red,
+                  child: const Text('باشه'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   String formatTimeOfDay(TimeOfDay timeOfDay) {
     final now = DateTime.now();
     final dt = DateTime(
         now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
     final format =
-        DateFormat('HH:mm:ss'); // you can change the format as needed
+        DateFormat('HH:mm:ss');
     return format.format(dt);
   }
 
-  Future<void> waitIranEmpSendItem() async {
-    try {
-      List<String> itemValues = [];
-      for (TextEditingController controller in itemControllers) {
-        itemValues.add(controller.text);
-      }
-      // Get the last document in the 'waiting' collection
-      var lastDoc = await FirebaseFirestore.instance
-          .collection('waiting')
-          .orderBy('id', descending: true)
-          .limit(1)
-          .get();
-
-      // If there are no documents yet, start with id 0. Otherwise, increment the last id by 1
-      int i = lastDoc.docs.isEmpty ? 0 : lastDoc.docs.first.data()['id'] + 1;
-
-      await FirebaseFirestore.instance.collection('waiting').add({
-        'id': i,
-        'source': controllerSource.text,
-        'destination': controllerDestionation.text,
-        'destinationName': controllerDestionationName.text,
-        'driverName': controllerDriverName.text,
-        'vehicle': controllerVehcle.text,
-        'vehicleTag': controllerVehcleTag.text,
-        'typeItem': controllerTypeItem.text,
-        'typeItemNumber': controllerTypeItemNumber.text,
-        'date': getShamsiDate(_selectedDate),
-        'time': formatTimeOfDay(_selectedTime!), // Use the new method here
-        'items': itemValues,
-      });
-
-      // print('Item added successfully with ID: $newId');
-    } catch (e) {
-      print(e.toString());
-    }
-  }
 }

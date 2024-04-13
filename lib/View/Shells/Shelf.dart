@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mnm/Controller/Controller.dart';
 import 'package:mnm/View/Drawer/Drawer.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:mnm/View/Shells/DataOfEveryShelf.dart';
 
 class Shelf extends StatelessWidget {
   final String warehouseName;
@@ -88,7 +90,27 @@ class Shelf extends StatelessWidget {
                                           return Column(
                                             children: [
                                               GestureDetector(
-                                                onTap: () {},
+                                                onTap: () async{
+
+                                                  var warehouse = snapshot.data?[index]['Warehouse'];
+                                                  var shelf = snapshot.data?[index]['Shelf'];
+
+                                                  var querySnapshot = await FirebaseFirestore.instance.collection('ReceiveFromIran').where('Warehouse', isEqualTo: warehouse).where('Shelf', isEqualTo: shelf).get();
+                                                  // querySnapshot.docs.forEach((doc) {
+                                                  //   print(doc.data());
+                                                  // });
+                                                  List<Map<String, dynamic>> dataList = [];
+                                                  for (var doc in querySnapshot.docs) {
+                                                    dataList.add(doc.data());
+                                                  }
+
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => DataOfEveryShelf(dataList: dataList,),
+                                                    ),
+                                                  );
+                                                },
                                                 child: Container(
                                                   width: MediaQuery.of(context)
                                                       .size

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mnm/Controller/Controller.dart';
 import 'package:mnm/View/Drawer/AfgDrawer.dart';
+import 'package:mnm/View/Shells/AfgShelf.dart';
 import 'package:mnm/View/Shells/Shelf.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -99,7 +100,7 @@ class _WarehouseState extends State<Warehouse> {
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                      builder: (context) => Shelf(warehouseName: snapshot.data![index]['Name']),
+                                                      builder: (context) => AfgShelf(warehouseName: snapshot.data![index]['Name']),
                                                     ),
                                                   );
                                                 },

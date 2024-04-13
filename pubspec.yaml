@@ -78,6 +78,8 @@ flutter:
     - assets/background/afgEmp.png
     - assets/background/IranEmp.png
     - assets/background/waitCB.jpg
+    - assets/background/sells.jpg
+    - assets/background/items.jpg
     - assets/icon/user.png
     - assets/icon/racks.png
     - assets/icon/warehouse.png
@@ -88,6 +90,9 @@ flutter:
     - assets/icon/menu.png
     - assets/icon/home.png
     - assets/icon/hourglass.png
+    - assets/icon/cart.png
+    - assets/icon/check-mark.png
+    - assets/icon/trash.png
 
 
 #  - images/a_dot_ham.jpeg

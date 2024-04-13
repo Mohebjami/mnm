@@ -5,17 +5,17 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mnm/Controller/Controller.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mnm/View/Afg/myMetaData.dart';
-import 'package:mnm/View/Drawer/AfgDrawer.dart';
+import 'package:mnm/View/Drawer/IranDrawer.dart';
 import 'package:mnm/View/Login.dart';
 
-class AfgEmp extends StatefulWidget {
-  const AfgEmp({super.key});
+class waitingData extends StatefulWidget {
+  const waitingData({super.key});
 
   @override
-  State<AfgEmp> createState() => _AfgEmpState();
+  State<waitingData> createState() => _waitingDataState();
 }
 
-class _AfgEmpState extends State<AfgEmp> {
+class _waitingDataState extends State<waitingData> {
   @override
   Widget build(BuildContext context) {
     double fullScreenHeight = MediaQuery.of(context).size.height;
@@ -59,7 +59,7 @@ class _AfgEmpState extends State<AfgEmp> {
             ),
           ],
         ),
-        drawer: const AfgDrawer(),
+        drawer: const IranDrawer(),
         body: SizedBox(
             height: fullScreenHeight,
             width: fullScreenWidth,
@@ -102,14 +102,14 @@ class _AfgEmpState extends State<AfgEmp> {
                                 future: controller.showWaitData(),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<List<Map<String, dynamic>>>
-                                        snapshot) {
+                                    snapshot) {
                                   if (snapshot.hasData) {
                                     return Padding(
                                       padding:
-                                          const EdgeInsets.only(top: 100.0),
+                                      const EdgeInsets.only(top: 100.0),
                                       child: ListView.builder(
                                         padding:
-                                            const EdgeInsets.only(left: 40),
+                                        const EdgeInsets.only(left: 40),
                                         itemCount: snapshot.data?.length,
                                         itemBuilder: (context, index) {
                                           return Column(
@@ -118,94 +118,94 @@ class _AfgEmpState extends State<AfgEmp> {
                                                 closeOnScroll: true,
                                                 startActionPane: ActionPane(
                                                     motion:
-                                                        const StretchMotion(),
+                                                    const StretchMotion(),
                                                     children: [
                                                       SlidableAction(
                                                         borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
+                                                        BorderRadius
+                                                            .circular(15),
                                                         backgroundColor:
-                                                            Colors.red,
+                                                        Colors.red,
                                                         icon: Icons
                                                             .delete_forever,
                                                         label: "حذف",
                                                         onPressed:
                                                             (BuildContextcontext) async {
                                                           var querySnapshot =
-                                                              await FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'waiting')
-                                                                  .where('id',
-                                                                      isEqualTo:
-                                                                          snapshot.data?[index]
-                                                                              [
-                                                                              'id'])
-                                                                  .get();
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                              'waiting')
+                                                              .where('id',
+                                                              isEqualTo:
+                                                              snapshot.data?[index]
+                                                              [
+                                                              'id'])
+                                                              .get();
                                                           querySnapshot.docs
                                                               .forEach(
                                                                   (doc) async {
-                                                            await FirebaseFirestore
-                                                                .instance
-                                                                .collection(
+                                                                await FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
                                                                     'waiting')
-                                                                .doc(doc.id)
-                                                                .delete();
-                                                            showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return AlertDialog(
-                                                                  title: Image
-                                                                      .asset(
-                                                                    "assets/icon/check-mark.png",
-                                                                  ),
-                                                                  content: const Text(
-                                                                      'موفقانه حذف شد',
-                                                                      textAlign:
+                                                                    .doc(doc.id)
+                                                                    .delete();
+                                                                showDialog(
+                                                                  context: context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                  context) {
+                                                                    return AlertDialog(
+                                                                      title: Image
+                                                                          .asset(
+                                                                        "assets/icon/check-mark.png",
+                                                                      ),
+                                                                      content: const Text(
+                                                                          'موفقانه حذف شد',
+                                                                          textAlign:
                                                                           TextAlign
                                                                               .center,
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontSize:
+                                                                          style: TextStyle(
+                                                                              color: Colors
+                                                                                  .black,
+                                                                              fontSize:
                                                                               20)),
-                                                                  actions: <Widget>[
-                                                                    Align(
-                                                                      alignment:
+                                                                      actions: <Widget>[
+                                                                        Align(
+                                                                          alignment:
                                                                           Alignment
                                                                               .center,
-                                                                      child:
-                                                                          SizedBox(
-                                                                        height:
-                                                                            50,
-                                                                        width:
-                                                                            130,
-                                                                        child:
-                                                                            MaterialButton(
-                                                                          color:
-                                                                              Colors.green,
                                                                           child:
+                                                                          SizedBox(
+                                                                            height:
+                                                                            50,
+                                                                            width:
+                                                                            130,
+                                                                            child:
+                                                                            MaterialButton(
+                                                                              color:
+                                                                              Colors.green,
+                                                                              child:
                                                                               const Text(
-                                                                            'باشه',
-                                                                            style:
+                                                                                'باشه',
+                                                                                style:
                                                                                 TextStyle(color: Colors.white, fontSize: 25),
+                                                                              ),
+                                                                              onPressed:
+                                                                                  () {
+                                                                                Navigator.of(context).pop();
+                                                                              },
+                                                                            ),
                                                                           ),
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.of(context).pop();
-                                                                          },
                                                                         ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
+                                                                      ],
+                                                                    );
+                                                                  },
                                                                 );
-                                                              },
-                                                            );
-                                                            setState(() {});
-                                                            print("deleted");
-                                                          });
+                                                                setState(() {});
+                                                                print("deleted");
+                                                              });
                                                         },
                                                       ),
                                                     ]),
@@ -217,83 +217,83 @@ class _AfgEmpState extends State<AfgEmp> {
                                                         builder: (context) =>
                                                             myMetaData(
                                                                 carpetMataData:
-                                                                    snapshot.data![
-                                                                            index]
-                                                                        ['id']),
+                                                                snapshot.data![
+                                                                index]
+                                                                ['id']),
                                                       ),
                                                     );
                                                   },
                                                   child: Container(
                                                     width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width -
-                                                            130,
+                                                    MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                        130,
                                                     height: 100,
                                                     decoration: BoxDecoration(
                                                       color:
-                                                          const Color.fromRGBO(
-                                                              152,
-                                                              116,
-                                                              100,
-                                                              1.0),
+                                                      const Color.fromRGBO(
+                                                          152,
+                                                          116,
+                                                          100,
+                                                          1.0),
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              15.0),
+                                                      BorderRadius.circular(
+                                                          15.0),
                                                     ),
                                                     child: Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                       children: [
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                  .all(12.0),
+                                                          const EdgeInsets
+                                                              .all(12.0),
                                                           child: Container(
                                                             width: 100,
                                                             height: 100,
                                                             decoration:
-                                                                BoxDecoration(
+                                                            BoxDecoration(
                                                               color: Colors
                                                                   .white10,
                                                               borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0),
+                                                              BorderRadius
+                                                                  .circular(
+                                                                  8.0),
                                                             ),
                                                             child: Center(
                                                               child: Text(
                                                                 snapshot.data![
-                                                                        index][
-                                                                        'typeItemNumber']
+                                                                index][
+                                                                'typeItemNumber']
                                                                     .toString(),
                                                                 style: const TextStyle(
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
-                                                                        20),
+                                                                    20),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                  .all(12.0),
+                                                          const EdgeInsets
+                                                              .all(12.0),
                                                           child: SizedBox(
                                                             width: 100,
                                                             height: 100,
                                                             child: Center(
                                                               child: Text(
                                                                 snapshot.data?[
-                                                                        index][
-                                                                    'typeItem'],
+                                                                index][
+                                                                'typeItem'],
                                                                 style: const TextStyle(
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
-                                                                        20),
+                                                                    20),
                                                               ),
                                                             ),
                                                           ),
@@ -338,7 +338,7 @@ class _AfgEmpState extends State<AfgEmp> {
                         Container(
                           decoration: const BoxDecoration(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(15)),
+                              BorderRadius.all(Radius.circular(15)),
                               image: DecorationImage(
                                   image: AssetImage(
                                       "assets/background/waitCB.jpg"),

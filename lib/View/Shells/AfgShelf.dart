@@ -1,25 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mnm/Controller/Controller.dart';
-import 'package:mnm/View/Drawer/Drawer.dart';
-import 'package:mnm/View/Shells/Shelf.dart';
+import 'package:mnm/View/Drawer/AfgDrawer.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class Admin extends StatefulWidget {
-  const Admin({super.key});
+class AfgShelf extends StatelessWidget {
+  final String warehouseName;
+  const AfgShelf({super.key, required this.warehouseName});
 
-  @override
-  State<Admin> createState() => _AdminState();
-}
-
-class _AdminState extends State<Admin> {
   @override
   Widget build(BuildContext context) {
     double fullScreenHeight = MediaQuery.of(context).size.height;
     double fullScreenWidth = MediaQuery.of(context).size.width;
     final Controller controller = Controller();
-
     return Scaffold(
         backgroundColor: const Color.fromRGBO(215, 203, 185, 1.0),
         appBar: AppBar(
@@ -41,7 +34,7 @@ class _AdminState extends State<Admin> {
             },
           ),
         ),
-        drawer: const myDrawer(),
+        drawer: const AfgDrawer(),
         body: SizedBox(
             height: fullScreenHeight,
             width: fullScreenWidth,
@@ -81,64 +74,51 @@ class _AdminState extends State<Admin> {
                             child: SizedBox(
                               height: 720,
                               child: FutureBuilder<List<Map<String, dynamic>>>(
-                                future: controller.showWarehouse(),
+                                future: controller.showshells(warehouseName),
                                 builder: (BuildContext context,
-                                    AsyncSnapshot<List<Map<String, dynamic>>>snapshot) {
+                                    AsyncSnapshot<List<Map<String, dynamic>>>
+                                    snapshot) {
                                   if (snapshot.hasData) {
                                     return Padding(
                                       padding:
-                                          const EdgeInsets.only(top: 100.0),
+                                      const EdgeInsets.only(top: 100.0),
                                       child: ListView.builder(
                                         itemCount: snapshot.data?.length,
                                         itemBuilder: (context, index) {
                                           return Column(
                                             children: [
                                               GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) => Shelf(warehouseName: snapshot.data![index]['Name']),
-                                                    ),
-                                                  );
-                                                },
+                                                onTap: () {},
                                                 child: Container(
-                                                  width: MediaQuery.of(context).size.width - 130,
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                      130,
                                                   height: 100,
                                                   decoration: BoxDecoration(
                                                     color: const Color.fromRGBO(
                                                         152, 116, 100, 1.0),
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            15.0),
+                                                    BorderRadius.circular(
+                                                        15.0),
                                                   ),
                                                   child: Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets
-                                                                .all(12.0),
-                                                        child: Container(
+                                                        const EdgeInsets
+                                                            .all(12.0),
+                                                        child: SizedBox(
                                                           width: 100,
                                                           height: 100,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color:
-                                                                Colors.white10,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8.0),
-                                                          ),
                                                           child: Center(
                                                             child: Text(
-                                                              snapshot
-                                                                  .data![index]
-                                                                      ['Number']
-                                                                  .toString(),
+                                                              snapshot.data?[
+                                                              index]
+                                                              ['Name'],
                                                               style: const TextStyle(
                                                                   color: Colors
                                                                       .white,
@@ -149,16 +129,26 @@ class _AdminState extends State<Admin> {
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets
-                                                                .all(12.0),
-                                                        child: SizedBox(
+                                                        const EdgeInsets
+                                                            .all(12.0),
+                                                        child: Container(
                                                           width: 100,
                                                           height: 100,
+                                                          decoration:
+                                                          BoxDecoration(
+                                                            color:
+                                                            Colors.white10,
+                                                            borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                8.0),
+                                                          ),
                                                           child: Center(
                                                             child: Text(
-                                                              snapshot.data?[
-                                                                      index]
-                                                                  ['Name'],
+                                                              snapshot
+                                                                  .data![index]
+                                                              ['Number']
+                                                                  .toString(),
                                                               style: const TextStyle(
                                                                   color: Colors
                                                                       .white,
@@ -184,10 +174,10 @@ class _AdminState extends State<Admin> {
                                   } else {
                                     return Center(
                                         child: LoadingAnimationWidget.inkDrop(
-                                      color: const Color.fromRGBO(
-                                          152, 116, 100, 1.0),
-                                      size: 50,
-                                    ));
+                                          color: const Color.fromRGBO(
+                                              152, 116, 100, 1.0),
+                                          size: 50,
+                                        ));
                                   }
                                 },
                               ),
@@ -206,10 +196,9 @@ class _AdminState extends State<Admin> {
                       children: [
                         Container(
                           decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15)),
                               image: DecorationImage(
                                   image: AssetImage(
-                                      "assets/background/carpet.jpg"),
+                                      "assets/background/carpet2.png"),
                                   fit: BoxFit.fill)),
                           height: 150,
                           width: fullScreenWidth - 110,
@@ -222,3 +211,4 @@ class _AdminState extends State<Admin> {
             )));
   }
 }
+

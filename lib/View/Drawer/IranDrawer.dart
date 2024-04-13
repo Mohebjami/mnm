@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:mnm/View/Afg/AfgEmp.dart';
-import 'package:mnm/View/Afg/Receive.dart';
-import 'package:mnm/View/Afg/Warehouse.dart';
-import 'package:mnm/View/Afg/WhData.dart';
+import 'package:mnm/View/Iran/IrEmp.dart';
+import 'package:mnm/View/Iran/waitingData.dart';
 
-class AfgDrawer extends StatefulWidget {
-  const AfgDrawer({super.key});
+class IranDrawer extends StatefulWidget {
+  const IranDrawer({super.key});
 
   @override
-  State<AfgDrawer> createState() => _AfgDrawerState();
+  State<IranDrawer> createState() => _IranDrawerState();
 }
 
-class _AfgDrawerState extends State<AfgDrawer> {
+class _IranDrawerState extends State<IranDrawer> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -51,16 +49,17 @@ class _AfgDrawerState extends State<AfgDrawer> {
                   width: 25,
                   color: Colors.black,
                 ),
-                title: const Text(
-                  'خانه',
-                  style: TextStyle(fontFamily: "Neirizi"),
+                title: Text(
+                  "ارسال      کردن     اجناس",
+                  style: TextStyle(
+                      fontFamily: "Neirizi"),
                 ),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const AfgEmp(),
+                      builder: (context) => const IrEmp(),
                     ),
                   );
                 },
@@ -72,7 +71,7 @@ class _AfgDrawerState extends State<AfgDrawer> {
                   color: Colors.black,
                 ),
                 title: const Text(
-                  'دریافت بار',
+                  'دیدن اجناس ارسال شده',
                   style: TextStyle(fontFamily: "Neirizi"),
                 ),
                 onTap: () {
@@ -80,47 +79,7 @@ class _AfgDrawerState extends State<AfgDrawer> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ReciveData(),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Image(
-                  image: AssetImage("assets/icon/racks.png"),
-                  width: 25,
-                  color: Colors.black,
-                ),
-                title: const Text(
-                  'گدام ها',
-                  style: TextStyle(fontFamily: "Neirizi"),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Warehouse(),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Image(
-                  image: AssetImage("assets/icon/cart.png"),
-                  width: 25,
-                  color: Colors.black,
-                ),
-                title: const Text(
-                  'موجودی در انبار',
-                  style: TextStyle(fontFamily: "Neirizi"),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WhData(),
+                      builder: (context) => const waitingData(),
                     ),
                   );
                 },

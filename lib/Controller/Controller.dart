@@ -48,7 +48,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: FiledNotification(),
             );
@@ -63,7 +63,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: SuccessNotification(),
             );
@@ -73,7 +73,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: FiledNotification(),
             );
@@ -84,7 +84,7 @@ class Controller {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return const AlertDialog(
             backgroundColor: Colors.transparent,
             content: FiledNotification(),
           );
@@ -110,7 +110,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: FiledNotification(),
             );
@@ -125,7 +125,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: SuccessNotification(),
             );
@@ -135,7 +135,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: FiledNotification(),
             );
@@ -146,7 +146,7 @@ class Controller {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return const AlertDialog(
             backgroundColor: Colors.transparent,
             content: FiledNotification(),
           );
@@ -172,7 +172,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: FiledNotification(),
             );
@@ -187,7 +187,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: SuccessNotification(),
             );
@@ -197,7 +197,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: FiledNotification(),
             );
@@ -208,7 +208,7 @@ class Controller {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return const AlertDialog(
             backgroundColor: Colors.transparent,
             content: FiledNotification(),
           );
@@ -231,7 +231,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: FiledNotification(),
             );
@@ -250,7 +250,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: SuccessNotification(),
             );
@@ -260,7 +260,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: FiledNotification(),
             );
@@ -271,7 +271,7 @@ class Controller {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return const AlertDialog(
             backgroundColor: Colors.transparent,
             content: FiledNotification(),
           );
@@ -355,14 +355,13 @@ class Controller {
       if(shellsNumber < WarehouseCapacity!) {
         try {
           CollectionReference collRef = FirebaseFirestore.instance.collection('Shelf');
-
           // Check if username or password contains any of the special characters
           RegExp regExp = RegExp(r'[*.,/"\\]');
           if (regExp.hasMatch(shellsName) || shellsNumber == 0 || shellsName.isEmpty) {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
+                return const AlertDialog(
                   backgroundColor: Colors.transparent,
                   content: FiledNotification(),
                 );
@@ -372,6 +371,7 @@ class Controller {
           }
           var lastDoc = await FirebaseFirestore.instance.collection('Warehouse').orderBy('id', descending: true).limit(1).get();
           int i = lastDoc.docs.isEmpty ? 1 : lastDoc.docs.first.data()['id'] + 1;
+          print("5");
           await collRef.add({
             'id': i,
             'Name': shellsName,
@@ -381,7 +381,7 @@ class Controller {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
+                return const AlertDialog(
                   backgroundColor: Colors.transparent,
                   content: SuccessNotification(),
                 );
@@ -391,7 +391,7 @@ class Controller {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
+                return const AlertDialog(
                   backgroundColor: Colors.transparent,
                   content: FiledNotification(),
                 );
@@ -402,7 +402,7 @@ class Controller {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
+              return const AlertDialog(
                 backgroundColor: Colors.transparent,
                 content: FiledNotification(),
               );
@@ -410,7 +410,27 @@ class Controller {
           );
         }
       }
-      else FiledNotification();
+      else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('خطا',textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 40)),
+              content: Text('شما از مقدار ظریفت انبار بیشتر وارد کردید'),
+              actions: <Widget>[
+                MaterialButton(
+                  color: Colors.red,
+                  child: Text('باشه'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+
+      }
 
   }
 
@@ -456,7 +476,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: FiledNotification(),
             );
@@ -471,7 +491,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: SuccessNotification(),
             );
@@ -481,7 +501,7 @@ class Controller {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               backgroundColor: Colors.transparent,
               content: FiledNotification(),
             );
@@ -492,7 +512,7 @@ class Controller {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return const AlertDialog(
             backgroundColor: Colors.transparent,
             content: FiledNotification(),
           );
@@ -517,6 +537,12 @@ class Controller {
     return snapshots.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
+  Future<List<Map<String, dynamic>>> showWhData() async {
+    final CollectionReference collectionReference = FirebaseFirestore.instance.collection('ReceiveFromIran');
+    var snapshots = await collectionReference.get();
+    return snapshots.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+  }
+
 
   void deleteFromFirebase(String id) async {
     var querySnapshot = await FirebaseFirestore.instance.collection('waiting').where('id', isEqualTo: id).get();
@@ -535,7 +561,7 @@ class SuccessNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.green,
         borderRadius: BorderRadius.circular(10),
@@ -543,9 +569,9 @@ class SuccessNotification extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Icon(Icons.check_circle, color: Colors.white, size: 100),
-          Text('Success', style: TextStyle(color: Colors.white, fontSize: 24)),
-          SizedBox(height: 10),
+          const Icon(Icons.check_circle, color: Colors.white, size: 100),
+          const Text('Success', style: TextStyle(color: Colors.white, fontSize: 24)),
+          const SizedBox(height: 10),
           ElevatedButton(
             child: const Text('OK'),
             onPressed: () {
@@ -564,7 +590,7 @@ class FiledNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.red,
         borderRadius: BorderRadius.circular(10),
@@ -572,9 +598,9 @@ class FiledNotification extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Icon(Icons.dangerous, color: Colors.white, size: 100),
-          Text('Filed', style: TextStyle(color: Colors.white, fontSize: 24)),
-          SizedBox(height: 10),
+          const Icon(Icons.dangerous, color: Colors.white, size: 100),
+          const Text('Filed', style: TextStyle(color: Colors.white, fontSize: 24)),
+          const SizedBox(height: 10),
           ElevatedButton(
             child: const Text('OK'),
             onPressed: () {
