@@ -617,7 +617,6 @@ class _ReciveDataState extends State<ReciveData> {
   }
 
   Future<void> receiveItems() async {
-    print("1");
     int Cnumber = int.parse(controllerTypeItemNumber.text);
     int? WarehouseCapacity;
     FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -630,12 +629,10 @@ class _ReciveDataState extends State<ReciveData> {
         print('Error: Number is not an integer');
       }
     });
-    print("2");
 
     final CollectionReference collectionReference = FirebaseFirestore.instance.collection('Shelf');
     var snapshots = await collectionReference.where('Warehouse', isEqualTo: controller.selectedWarehouse).get();
     var shellNames = snapshots.docs.map((doc) => (doc.data() as Map<String, dynamic>)['Number'] as int?).where((item) => item != null).toList().cast<int>();
-    print("3");
     int? rs = shellNames.isNotEmpty ? shellNames[0] : null;
     int ShelfCapacity = rs ?? 0;
     var lastDoc = await FirebaseFirestore.instance.collection('ReceiveFromIran').orderBy('id', descending: true).limit(1).get();
@@ -643,27 +640,18 @@ class _ReciveDataState extends State<ReciveData> {
     // If there are no documents yet, start with id 0. Otherwise, increment the last id by 1
     int i = lastDoc.docs.isEmpty ? 0 : lastDoc.docs.first.data()['id'] + 1;
     if (WarehouseCapacity! > 0 && ShelfCapacity > 0) {
-
-
       var collection = FirebaseFirestore.instance.collection('waiting');
       var snapshot = await collection.get();
       for (var doc in snapshot.docs) {
-        print("---------------------------------------");
-        print(doc.data()['typeItemNumber']);
-        print(doc.data()['typeItemNumber'].runtimeType);
-
         int castnumber = int.parse(doc.data()['typeItemNumber']);
-        print("this is cast number = $castnumber");
-        print("this is C number = $Cnumber");
-        print("this is C number type = ${Cnumber}");
         if(castnumber < Cnumber)
           {
             showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text("خطای مقدار", textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 30)),
-                  content:   Text('تعداد موجود $castnumber عدد است ', textAlign: TextAlign.right, style: TextStyle(color: Colors.black,fontSize: 20)),
+                  title: const Text("خطای مقدار", textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 30)),
+                  content: Text('تعداد موجود $castnumber عدد است ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black,fontSize: 20)),
                   actions: <Widget>[
                     Align(
                       alignment: Alignment.centerLeft,
@@ -686,7 +674,6 @@ class _ReciveDataState extends State<ReciveData> {
             for (TextEditingController controller in itemControllers) {
               itemValues.add(controller.text);
             }
-
             await FirebaseFirestore.instance.collection('ReceiveFromIran').add({
               'id': i,
               'item':controller.selectedWaiting,
@@ -703,6 +690,27 @@ class _ReciveDataState extends State<ReciveData> {
             print('Item added successfully');
           } catch (e) {
             print(e.toString());
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text("خطای", textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 30)),
+                  content: Text(e.toString(), textAlign: TextAlign.right, style: const TextStyle(color: Colors.black,fontSize: 20)),
+                  actions: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: MaterialButton(
+                        color: Colors.green,
+                        child: const Text('باشه' ,style: TextStyle(color: Colors.white),),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
           }
           // Update warehouse and shelf capacity
           var querySnapshotW = await firestore.collection('Warehouse').where('Name', isEqualTo: controller.selectedWarehouse).get();

@@ -112,9 +112,7 @@ class DataOfEveryShelf extends StatelessWidget {
                                                               15.0),
                                                     ),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         Padding(
                                                           padding:
@@ -179,8 +177,11 @@ class DataOfEveryShelf extends StatelessWidget {
                                       return Text('Error: ${snapshot.error}');
                                     } else {
                                       return Center(
-                                        child:
-                                            CircularProgressIndicator(), // replace with your custom loading widget
+                                        child: LoadingAnimationWidget.inkDrop(
+                                          color: const Color.fromRGBO(
+                                              152, 116, 100, 1.0),
+                                          size: 50,
+                                        ),
                                       );
                                     }
                                   },
