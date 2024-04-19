@@ -16,7 +16,6 @@ class IrEmp extends StatefulWidget {
 
 class _IrEmpState extends State<IrEmp> {
   final Controller controller = Controller();
-  List<TextEditingController> itemControllers = [];
   TextEditingController controllerSource = TextEditingController();
   TextEditingController controllerDestionation = TextEditingController();
   TextEditingController controllerDestionationName = TextEditingController();
@@ -25,14 +24,18 @@ class _IrEmpState extends State<IrEmp> {
   TextEditingController controllerVehcleTag = TextEditingController();
   TextEditingController controllerTypeItem = TextEditingController();
   TextEditingController controllerTypeItemNumber = TextEditingController();
+  TextEditingController controllerTypeItemShanh = TextEditingController();
+  TextEditingController controllerTypeItemTrakom = TextEditingController();
+  TextEditingController controllerTypeItemSize = TextEditingController();
+  TextEditingController controllerTypeItemName = TextEditingController();
+  TextEditingController controllerTypeItemColor = TextEditingController();
+
+
 
   @override
   void initState() {
     super.initState();
     fetchWarehouseData();
-    for (int i = 0; i < _numFields; i++) {
-      itemControllers.add(TextEditingController());
-    }
   }
 
   Future<void> fetchWarehouseData() async {
@@ -42,7 +45,6 @@ class _IrEmpState extends State<IrEmp> {
   }
 
   final TextEditingController _controller = TextEditingController();
-  final List<String> _hints = ['نام کار', 'زمینه رنگ', 'سایز', 'تراکم', 'شانه'];
   int _numFields = 0;
 
   DateTime? _selectedDate;
@@ -313,6 +315,119 @@ class _IrEmpState extends State<IrEmp> {
                                       ),
 
                                     ),
+
+
+                                    //---------------------------------------------------
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextField(
+                                      controller: controllerTypeItemName,
+                                      textAlign: TextAlign.right,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        hintText: "نام کار",
+                                        hintStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+
+                                    ),
+
+
+
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextField(
+                                      controller: controllerTypeItemColor,
+                                      textAlign: TextAlign.right,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        hintText: "زمینه رنگ",
+                                        hintStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+
+                                    ),
+
+
+
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextField(
+                                      controller: controllerTypeItemSize,
+                                      textAlign: TextAlign.right,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        hintText: "سایز",
+                                        hintStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+
+                                    ),
+
+
+
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextField(
+                                      controller: controllerTypeItemTrakom,
+                                      textAlign: TextAlign.right,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        hintText: "تراکم",
+                                        hintStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+
+                                    ),
+
+
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextField(
+                                      controller: controllerTypeItemShanh,
+                                      textAlign: TextAlign.right,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        hintText: "شانه",
+                                        hintStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+
+                                    ),
+
+
+                                    //---------------------------------------------------
+
                                     const SizedBox(
                                       height: 10,
                                     ),
@@ -426,7 +541,6 @@ class _IrEmpState extends State<IrEmp> {
                                     MaterialButton(
                                       onPressed: () {
                                         newIranEmpSendItem();
-                                        waitIranEmpSendItem();
                                       },
                                       color: const Color.fromRGBO(
                                           162, 126, 110, 1),
@@ -468,10 +582,6 @@ class _IrEmpState extends State<IrEmp> {
           size: 50,
         ),
       );
-      List<String> itemValues = [];
-      for (TextEditingController controller in itemControllers) {
-        itemValues.add(controller.text);
-      }
       await FirebaseFirestore.instance.collection('SendFromIran').add({
         'source': controllerSource.text,
         'destination': controllerDestionation.text,
@@ -481,9 +591,14 @@ class _IrEmpState extends State<IrEmp> {
         'vehicleTag': controllerVehcleTag.text,
         'typeItem': controllerTypeItem.text,
         'typeItemNumber': controllerTypeItemNumber.text,
+        'Item Name': controllerTypeItemName.text,
+        'Item Color':controllerTypeItemColor.text,
+        'Item Size':controllerTypeItemSize.text,
+        'Item Trakom' : controllerTypeItemTrakom.text,
+        'Item Shanh' : controllerTypeItemShanh.text,
         'date': getShamsiDate(_selectedDate),
         'time': _selectedTime?.format(context),
-        'items': itemValues, // Add this line
+
       });
       showDialog(
         context: context,
@@ -510,6 +625,7 @@ class _IrEmpState extends State<IrEmp> {
           );
         },
       );
+      waitIranEmpSendItem();
       print('Item added successfully');
     } catch (e) {
       print(e.toString());
@@ -528,9 +644,7 @@ class _IrEmpState extends State<IrEmp> {
   Future<void> waitIranEmpSendItem() async {
     try {
       List<String> itemValues = [];
-      for (TextEditingController controller in itemControllers) {
-        itemValues.add(controller.text);
-      }
+
       // Get the last document in the 'waiting' collection
       var lastDoc = await FirebaseFirestore.instance.collection('waiting').orderBy('id', descending: true).limit(1).get();
 
@@ -547,6 +661,11 @@ class _IrEmpState extends State<IrEmp> {
         'vehicleTag': controllerVehcleTag.text,
         'typeItem': controllerTypeItem.text,
         'typeItemNumber': controllerTypeItemNumber.text,
+        'Item Name': controllerTypeItemName.text,
+        'Item Color':controllerTypeItemColor.text,
+        'Item Size':controllerTypeItemSize.text,
+        'Item Trakom' : controllerTypeItemTrakom.text,
+        'Item Shanh' : controllerTypeItemShanh.text,
         'date': getShamsiDate(_selectedDate),
         'time': formatTimeOfDay(_selectedTime!), // Use the new method here
         'items': itemValues,

@@ -351,6 +351,14 @@ class _AfgEmpState extends State<AfgEmp> {
                   ),
                 ),
               ],
-            )));
+            )),
+        floatingActionButton: MaterialButton(
+          color: const Color.fromRGBO(152, 116, 100, 1.0),
+          onPressed: (){
+            setState(() {});
+          },child: const Text("Refresh",style: TextStyle(color: Colors.white),),
+        ),
+
+    );
   }
 }
