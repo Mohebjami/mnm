@@ -30,15 +30,18 @@ class _AfgEmpState extends State<AfgEmp> {
           iconTheme: const IconThemeData(color: Colors.white),
           leading: Builder(
             builder: (BuildContext context) {
-              return IconButton(
-                icon: const ImageIcon(
-                  AssetImage("assets/icon/menu.png"),
-                  size: 24,
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: IconButton(
+                  icon: const ImageIcon(
+                    AssetImage("assets/icon/menu.png"),
+                    size: 24,
+                  ),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                 ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
               );
             },
           ),

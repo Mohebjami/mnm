@@ -556,6 +556,10 @@ class _IrEmpState extends State<IrEmp> {
                                             color: Colors.white,
                                             fontFamily: "Neirizi"),
                                       ),
+                                    ),
+
+                                    SizedBox(
+                                      height: 50,
                                     )
                                   ],
                                 ),
@@ -643,8 +647,6 @@ class _IrEmpState extends State<IrEmp> {
 
   Future<void> waitIranEmpSendItem() async {
     try {
-      List<String> itemValues = [];
-
       // Get the last document in the 'waiting' collection
       var lastDoc = await FirebaseFirestore.instance.collection('waiting').orderBy('id', descending: true).limit(1).get();
 
@@ -668,7 +670,6 @@ class _IrEmpState extends State<IrEmp> {
         'Item Shanh' : controllerTypeItemShanh.text,
         'date': getShamsiDate(_selectedDate),
         'time': formatTimeOfDay(_selectedTime!), // Use the new method here
-        'items': itemValues,
       });
 
       // print('Item added successfully with ID: $newId');

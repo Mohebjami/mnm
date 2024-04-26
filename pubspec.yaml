@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.4.0-157.0.dev <4.0.0'
+  sdk: '>=3.3.0-157.0.dev <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -70,29 +70,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/background/carpet.jpg
-    - assets/background/carpet2.png
-    - assets/background/carpet3.jpg
-    - assets/background/addAdmin.png
-    - assets/background/shells.jpg
-    - assets/background/afgEmp.png
-    - assets/background/IranEmp.png
-    - assets/background/waitCB.jpg
-    - assets/background/sells.jpg
-    - assets/background/items.jpg
-    - assets/icon/user.png
-    - assets/icon/racks.png
-    - assets/icon/warehouse.png
-    - assets/icon/add-user.png
-    - assets/icon/add-admin.png
-    - assets/icon/add-userIR.png
-    - assets/icon/info.png
-    - assets/icon/menu.png
-    - assets/icon/home.png
-    - assets/icon/hourglass.png
-    - assets/icon/cart.png
-    - assets/icon/check-mark.png
-    - assets/icon/trash.png
+    - assets/background/
+    - assets/icon/
+
 
 
 #  - images/a_dot_ham.jpeg

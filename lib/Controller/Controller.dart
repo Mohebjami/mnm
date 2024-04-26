@@ -309,6 +309,15 @@ class Controller {
         .where((item) => item != null)
         .toList();
   }
+  Future<List<String?>> showexitFromwarehouse() async {
+    final CollectionReference collectionReference =
+    FirebaseFirestore.instance.collection('ReceiveFromIran');
+    var snapshots = await collectionReference.get();
+    return snapshots.docs
+        .map((doc) => (doc.data() as Map<String, dynamic>)['typeItem'] as String?)
+        .where((item) => item != null)
+        .toList();
+  }
 
 // Add a new method to fetch the shell data
   Future<void> fetchShellData(String warehouseName) async {

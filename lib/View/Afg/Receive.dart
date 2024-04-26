@@ -115,16 +115,19 @@ class _ReciveDataState extends State<ReciveData> {
                     children: [
                       Builder(
                         builder: (BuildContext context) {
-                          return IconButton(
-                            icon: const ImageIcon(
-                              AssetImage("assets/icon/menu.png",),
-                              color: Colors.white,
-                              size: 24,
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 30.0, left: 8),
+                            child: IconButton(
+                              icon: const ImageIcon(
+                                AssetImage("assets/icon/menu.png",),
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                             ),
-                            onPressed: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                           );
                         },
                       ),
@@ -558,6 +561,7 @@ class _ReciveDataState extends State<ReciveData> {
                                       onPressed: () async {
                                         if (controller.selectedShelf != null) {
                                           receiveItems();
+                                          setState(() {});
                                         } else {
                                           showDialog(
                                             context: context,
@@ -674,9 +678,17 @@ class _ReciveDataState extends State<ReciveData> {
             for (TextEditingController controller in itemControllers) {
               itemValues.add(controller.text);
             }
+
+            QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('waiting')
+                .where('typeItem', isEqualTo: controller.selectedWaiting)
+                .get();
+
+            List<Object?> items = querySnapshot.docs.map((doc) => doc.data()).toList();
+
             await FirebaseFirestore.instance.collection('ReceiveFromIran').add({
               'id': i,
-              'item':controller.selectedWaiting,
+              'typeItem': controller.selectedWaiting,
+              'item': items, // Storing the list of data
               'destinationName': controllerDestionationName.text,
               'driverName': controllerDriverName.text,
               'vehicle': controllerVehcle.text,
@@ -687,6 +699,7 @@ class _ReciveDataState extends State<ReciveData> {
               'Warehouse': controller.selectedWarehouse,
               'Shelf': controller.selectedShelf,
             });
+
             print('Item added successfully');
           } catch (e) {
             print(e.toString());
@@ -719,12 +732,11 @@ class _ReciveDataState extends State<ReciveData> {
           }
 
           var querySnapshot = await firestore.collection('Shelf').where('Warehouse', isEqualTo: controller.selectedWarehouse).get();
-
           for (var doc in querySnapshot.docs) {
             doc.reference.update({'Number': FieldValue.increment(-Cnumber)});
           }
           // Delete data from 'watting' table
-          var waitingSnapshot = await firestore.collection('waiting').where('id', isEqualTo: i).get();
+          var waitingSnapshot = await firestore.collection('waiting').where('typeItem', isEqualTo: controller.selectedWaiting).get();
           for (var doc in waitingSnapshot.docs) {
             doc.reference.delete();
             print("deleted");
