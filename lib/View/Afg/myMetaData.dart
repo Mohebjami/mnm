@@ -12,7 +12,7 @@ class myMetaDataSTF extends StatefulWidget {
 class _myMetaDataSTFState extends State<myMetaDataSTF> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }
 
@@ -71,8 +71,7 @@ class myMetaData extends StatelessWidget {
                             child: SizedBox(
                               height: 720,
                               child: FutureBuilder<List<Map<String, dynamic>>>(
-                                future: controller
-                                    .showWaitData_MataData(carpetMataData),
+                                future: controller.showWaitData_MataData(carpetMataData),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<List<Map<String, dynamic>>>
                                         snapshot) {

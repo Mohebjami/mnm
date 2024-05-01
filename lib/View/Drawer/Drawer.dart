@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mnm/View/Admin/AddAdmin.dart';
 import 'package:mnm/View/Admin/AddWareHouse.dart';
 import 'package:mnm/View/Admin/Admin.dart';
+import 'package:mnm/View/Admin/ShowExitHeratWarehouses.dart';
 import 'package:mnm/View/Admin/WaitData.dart';
 import 'package:mnm/View/Afg/RigisterAfgEmp.dart';
 import 'package:mnm/View/Iran/RigisterIranEmp.dart';
@@ -18,7 +19,7 @@ class _myDrawerState extends State<myDrawer> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 700,
+      height: 750,
       child: Drawer(
         backgroundColor: const Color.fromRGBO(215,203,185, 1.0),
         shape: const RoundedRectangleBorder(
@@ -158,7 +159,7 @@ class _myDrawerState extends State<myDrawer> {
                   width: 25,
                   color: Colors.black,
                 ),
-                title: const Text('ارسال شده ها', style: TextStyle(fontFamily: "Neirizi"),),
+                title: const Text('ارسال شده از ایران', style: TextStyle(fontFamily: "Neirizi"),),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -169,8 +170,24 @@ class _myDrawerState extends State<myDrawer> {
                     ),
                   );
                 },
-              ),
-              ListTile(
+              ), ListTile(
+                leading: const Image(
+                  image: AssetImage("assets/icon/hourglass.png"),
+                  width: 25,
+                  color: Colors.black,
+                ),
+                title: const Text('خارج شده از گدام هرات', style: TextStyle(fontFamily: "Neirizi"),),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                      const ShowExitHeratWarehouses(),
+                    ),
+                  );
+                },
+              ), ListTile(
                 leading: const Image(
                   image: AssetImage("assets/icon/info.png"),
                   width: 25,

@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mnm/Controller/Controller.dart';
+import 'package:mnm/View/Afg/SubReportAfg.dart';
+import 'package:mnm/View/Drawer/AfgDrawer.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:mnm/View/Drawer/Drawer.dart';
-import 'package:mnm/View/Shells/SubReport.dart';
 
-class DataOfEveryShelf extends StatelessWidget {
+class DataOfEveryShelfAfg extends StatelessWidget {
   final List<Map<String, dynamic>> dataList;
-  const DataOfEveryShelf({super.key, required this.dataList});
+  const DataOfEveryShelfAfg({super.key, required this.dataList});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class DataOfEveryShelf extends StatelessWidget {
             },
           ),
         ),
-        drawer: const myDrawer(),
+        drawer: const AfgDrawer(),
         body: SizedBox(
             height: fullScreenHeight,
             width: fullScreenWidth,
@@ -96,7 +96,7 @@ class DataOfEveryShelf extends StatelessWidget {
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                        builder: (context) => SubReport(dataList: dataList,),
+                                                        builder: (context) => SubReportAfg(dataList: dataList,),
                                                       ),
                                                     );
                                                   },

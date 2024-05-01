@@ -49,7 +49,7 @@ class _IranDrawerState extends State<IranDrawer> {
                   width: 25,
                   color: Colors.black,
                 ),
-                title: Text(
+                title: const Text(
                   "ارسال      کردن     اجناس",
                   style: TextStyle(
                       fontFamily: "Neirizi"),

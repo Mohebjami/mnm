@@ -290,6 +290,18 @@ class Controller {
         .toList();
   }
 
+
+  // Show exitFromWarehouse
+  Future<List<Map<String, dynamic>>> exitFromWarehouse() async {
+    final CollectionReference collectionReference =
+    FirebaseFirestore.instance.collection('ExitFromWarehouse');
+    var snapshots = await collectionReference.get();
+    return snapshots.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+  }
+
+
   Future<List<String?>> showWarehouseDropDownList() async {
     final CollectionReference collectionReference =
     FirebaseFirestore.instance.collection('Warehouse');
@@ -309,6 +321,7 @@ class Controller {
         .where((item) => item != null)
         .toList();
   }
+
   Future<List<String?>> showexitFromwarehouse() async {
     final CollectionReference collectionReference =
     FirebaseFirestore.instance.collection('ReceiveFromIran');
@@ -353,14 +366,14 @@ class Controller {
     int? WarehouseCapacity;
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     QuerySnapshot querySnapshot = await firestore.collection('Warehouse').where('Name', isEqualTo: warehouse).get();
-    querySnapshot.docs.forEach((doc) {
+    for (var doc in querySnapshot.docs) {
       var rs = doc['Number'];
       if(rs is int) {
         WarehouseCapacity = rs;
       } else {
         print('Error: Number is not an integer');
       }
-    });
+    }
       if(shellsNumber < WarehouseCapacity!) {
         try {
           CollectionReference collRef = FirebaseFirestore.instance.collection('Shelf');
@@ -424,12 +437,12 @@ class Controller {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('خطا',textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 40)),
-              content: Text('شما از مقدار ظریفت انبار بیشتر وارد کردید'),
+              title: const Text('خطا',textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 40)),
+              content: const Text('شما از مقدار ظریفت انبار بیشتر وارد کردید'),
               actions: <Widget>[
                 MaterialButton(
                   color: Colors.red,
-                  child: Text('باشه'),
+                  child: const Text('باشه'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -559,6 +572,12 @@ class Controller {
       await FirebaseFirestore.instance.collection('waiting').doc(doc.id).delete();
       print("deleted");
     });
+  }
+
+
+  Future<List<Map<String, dynamic>>> getAllData_SendFromIran() async {
+    var snapshot = await FirebaseFirestore.instance.collection('SendFromIran').get();
+    return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
 

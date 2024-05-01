@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mnm/View/Drawer/IranDrawer.dart';
+import 'package:mnm/View/Login.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 import 'package:mnm/Controller/Controller.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart' as pdp;
@@ -45,7 +46,7 @@ class _IrEmpState extends State<IrEmp> {
   }
 
   final TextEditingController _controller = TextEditingController();
-  int _numFields = 0;
+  final int _numFields = 0;
 
   DateTime? _selectedDate;
   Future<void> _selectDate(BuildContext context) async {
@@ -107,21 +108,41 @@ class _IrEmpState extends State<IrEmp> {
                 SizedBox(
                   height: 100,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Builder(
                         builder: (BuildContext context) {
-                          return IconButton(
-                            icon: const ImageIcon(
-                              AssetImage("assets/icon/menu.png",),
-                              color: Colors.white,
-                              size: 24,
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 50.0,left: 10),
+                            child: IconButton(
+                              icon: const ImageIcon(
+                                AssetImage("assets/icon/menu.png",),
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                             ),
-                            onPressed: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                           );
                         },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 50.0,right: 10),
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Login(),
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.logout,
+                              color: Colors.white,
+                              size: 24,),
+                        ),
                       ),
                     ],
                   ),
@@ -535,6 +556,7 @@ class _IrEmpState extends State<IrEmp> {
                                         ),
                                       ),
                                     ),
+                                    //--------
                                     const SizedBox(
                                       height: 20,
                                     ),
@@ -558,7 +580,7 @@ class _IrEmpState extends State<IrEmp> {
                                       ),
                                     ),
 
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 50,
                                     )
                                   ],
@@ -586,6 +608,11 @@ class _IrEmpState extends State<IrEmp> {
           size: 50,
         ),
       );
+
+
+
+      int ItemNumberVal = int.parse(controllerTypeItemNumber.text);
+
       await FirebaseFirestore.instance.collection('SendFromIran').add({
         'source': controllerSource.text,
         'destination': controllerDestionation.text,
@@ -594,7 +621,7 @@ class _IrEmpState extends State<IrEmp> {
         'vehicle': controllerVehcle.text,
         'vehicleTag': controllerVehcleTag.text,
         'typeItem': controllerTypeItem.text,
-        'typeItemNumber': controllerTypeItemNumber.text,
+        'typeItemNumber': ItemNumberVal,
         'Item Name': controllerTypeItemName.text,
         'Item Color':controllerTypeItemColor.text,
         'Item Size':controllerTypeItemSize.text,
@@ -602,7 +629,6 @@ class _IrEmpState extends State<IrEmp> {
         'Item Shanh' : controllerTypeItemShanh.text,
         'date': getShamsiDate(_selectedDate),
         'time': _selectedTime?.format(context),
-
       });
       showDialog(
         context: context,
@@ -652,6 +678,7 @@ class _IrEmpState extends State<IrEmp> {
 
       // If there are no documents yet, start with id 0. Otherwise, increment the last id by 1
       int i = lastDoc.docs.isEmpty ? 0 : lastDoc.docs.first.data()['id'] + 1;
+      int ItemNumberVal = int.parse(controllerTypeItemNumber.text);
 
       await FirebaseFirestore.instance.collection('waiting').add({
         'id': i,
@@ -662,7 +689,7 @@ class _IrEmpState extends State<IrEmp> {
         'vehicle': controllerVehcle.text,
         'vehicleTag': controllerVehcleTag.text,
         'typeItem': controllerTypeItem.text,
-        'typeItemNumber': controllerTypeItemNumber.text,
+        'typeItemNumber': ItemNumberVal,
         'Item Name': controllerTypeItemName.text,
         'Item Color':controllerTypeItemColor.text,
         'Item Size':controllerTypeItemSize.text,

@@ -1,23 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mnm/View/Drawer/AfgDrawer.dart';
+import 'package:mnm/View/Drawer/Drawer.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 import 'package:mnm/Controller/Controller.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart' as pdp;
 
-class ReciveData extends StatefulWidget {
-  const ReciveData({super.key});
+class exitFromwarehouse extends StatefulWidget {
+  const exitFromwarehouse({super.key});
 
   @override
-  State<ReciveData> createState() => _ReciveDataState();
+  State<exitFromwarehouse> createState() => _exitFromwarehouseState();
 }
 
-class _ReciveDataState extends State<ReciveData> {
-  bool _isLoading = false;
+class _exitFromwarehouseState extends State<exitFromwarehouse> {
   final Controller controller = Controller();
   List<TextEditingController> itemControllers = [];
-  TextEditingController controllerSource = TextEditingController();
+  TextEditingController controllerFactorNumber = TextEditingController();
   TextEditingController controllerDestionation = TextEditingController();
   TextEditingController controllerDestionationName = TextEditingController();
   TextEditingController controllerDriverName = TextEditingController();
@@ -25,6 +24,14 @@ class _ReciveDataState extends State<ReciveData> {
   TextEditingController controllerVehcleTag = TextEditingController();
   TextEditingController controllerTypeItem = TextEditingController();
   TextEditingController controllerTypeItemNumber = TextEditingController();
+  //=============
+  TextEditingController controllerSource = TextEditingController();
+  TextEditingController controllerTypeItemShanh = TextEditingController();
+  TextEditingController controllerTypeItemTrakom = TextEditingController();
+  TextEditingController controllerTypeItemSize = TextEditingController();
+  TextEditingController controllerTypeItemName = TextEditingController();
+  TextEditingController controllerTypeItemColor = TextEditingController();
+
 
   @override
   void initState() {
@@ -43,12 +50,9 @@ class _ReciveDataState extends State<ReciveData> {
   }
 
   Future<void> fetchWaitingData() async {
-    controller.waitingDropDown =
-        (await controller.showWarehouseDropDownListDropDownReceive())
-            .cast<String>();
+    controller.waitingDropDown = (await controller.showexitFromwarehouse()).cast<String>();
     setState(() {});
   }
-
   final int _numFields = 0;
 
   DateTime? _selectedDate;
@@ -94,7 +98,7 @@ class _ReciveDataState extends State<ReciveData> {
     double fullScreenHeight = MediaQuery.of(context).size.height;
     double fullScreenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        drawer: const AfgDrawer(),
+        drawer: const myDrawer(),
         body: SingleChildScrollView(
           child: Container(
             height: fullScreenHeight,
@@ -115,21 +119,17 @@ class _ReciveDataState extends State<ReciveData> {
                           Builder(
                             builder: (BuildContext context) {
                               return Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 30.0, left: 8),
+                                padding: const EdgeInsets.only(left: 10.0,top: 30),
                                 child: IconButton(
                                   icon: const ImageIcon(
-                                    AssetImage(
-                                      "assets/icon/menu.png",
-                                    ),
+                                    AssetImage("assets/icon/menu.png",),
                                     color: Colors.white,
                                     size: 24,
                                   ),
                                   onPressed: () {
                                     Scaffold.of(context).openDrawer();
                                   },
-                                  tooltip: MaterialLocalizations.of(context)
-                                      .openAppDrawerTooltip,
+                                  tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                                 ),
                               );
                             },
@@ -156,7 +156,7 @@ class _ReciveDataState extends State<ReciveData> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             const Text(
-                              "دریافت اجناس",
+                              "ارسال اجناس",
                               style: TextStyle(
                                   fontSize: 25,
                                   color: Colors.white,
@@ -179,15 +179,13 @@ class _ReciveDataState extends State<ReciveData> {
                                       left: 15.0, right: 15.0, top: 30),
                                   child: SingleChildScrollView(
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         const SizedBox(
                                           height: 10,
                                         ),
                                         TextField(
-                                          controller:
-                                              controllerDestionationName,
+                                          controller: controllerDestionationName,
                                           textAlign: TextAlign.right,
                                           decoration: const InputDecoration(
                                             border: OutlineInputBorder(
@@ -212,43 +210,7 @@ class _ReciveDataState extends State<ReciveData> {
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(20)),
                                             ),
-                                            hintText: "نام راننده",
-                                            hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        TextField(
-                                          controller: controllerVehcle,
-                                          textAlign: TextAlign.right,
-                                          decoration: const InputDecoration(
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20)),
-                                            ),
-                                            hintText: "نوع وسیله انتقال اجناس",
-                                            hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        TextField(
-                                          controller: controllerVehcleTag,
-                                          textAlign: TextAlign.right,
-                                          decoration: const InputDecoration(
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20)),
-                                            ),
-                                            hintText: "نمبر پلاک",
+                                            hintText: "نمبر فاکتور",
                                             hintStyle: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
@@ -267,13 +229,15 @@ class _ReciveDataState extends State<ReciveData> {
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(20)),
                                             ),
-                                            hintText: "تعداد اجناس",
+                                            hintText: "تعداد جنس",
                                             hintStyle: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 20),
                                           ),
+
                                         ),
+
                                         const SizedBox(
                                           height: 10,
                                         ),
@@ -282,17 +246,13 @@ class _ReciveDataState extends State<ReciveData> {
                                           decoration: const BoxDecoration(
                                               border: Border(
                                                 top: BorderSide(
-                                                    width: 1.2,
-                                                    color: Colors.grey),
+                                                    width: 1.2, color: Colors.grey),
                                                 left: BorderSide(
-                                                    width: 1.2,
-                                                    color: Colors.grey),
+                                                    width: 1.2, color: Colors.grey),
                                                 right: BorderSide(
-                                                    width: 1.2,
-                                                    color: Colors.grey),
+                                                    width: 1.2, color: Colors.grey),
                                                 bottom: BorderSide(
-                                                    width: 1.2,
-                                                    color: Colors.grey),
+                                                    width: 1.2, color: Colors.grey),
                                               ),
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(20))),
@@ -300,19 +260,16 @@ class _ReciveDataState extends State<ReciveData> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceAround,
                                               children: <Widget>[
                                                 InkWell(
                                                   child: Text(
-                                                      getShamsiDate(
-                                                          _selectedDate),
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                      getShamsiDate(_selectedDate),
+                                                      textAlign: TextAlign.center,
                                                       style: const TextStyle(
                                                           color: Colors.white)),
                                                   onTap: () {
-                                                    getShamsiDate(
-                                                        _selectedDate);
+                                                    getShamsiDate(_selectedDate);
                                                   },
                                                 ),
                                                 IconButton(
@@ -321,7 +278,7 @@ class _ReciveDataState extends State<ReciveData> {
                                                     color: Colors.white,
                                                   ),
                                                   tooltip:
-                                                      'Tap to open date picker',
+                                                  'Tap to open date picker',
                                                   onPressed: () =>
                                                       _selectDate(context),
                                                 ),
@@ -359,16 +316,15 @@ class _ReciveDataState extends State<ReciveData> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceAround,
                                               children: <Widget>[
                                                 InkWell(
                                                   child: Text(
                                                       _selectedTime == null
                                                           ? 'ساعت'
                                                           : _selectedTime!
-                                                              .format(context),
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                          .format(context),
+                                                      textAlign: TextAlign.center,
                                                       style: const TextStyle(
                                                           color: Colors.white)),
                                                   onTap: () {
@@ -377,12 +333,11 @@ class _ReciveDataState extends State<ReciveData> {
                                                 ),
                                                 IconButton(
                                                   icon: const Icon(
-                                                    Icons
-                                                        .access_time_filled_sharp,
+                                                    Icons.access_time_filled_sharp,
                                                     color: Colors.white,
                                                   ),
                                                   tooltip:
-                                                      'Tap to open date picker',
+                                                  'Tap to open date picker',
                                                   onPressed: () =>
                                                       selectTime(context),
                                                 ),
@@ -398,7 +353,7 @@ class _ReciveDataState extends State<ReciveData> {
                                               color: const Color.fromRGBO(
                                                   152, 116, 100, 1.0),
                                               borderRadius:
-                                                  BorderRadius.circular(20.0)),
+                                              BorderRadius.circular(20.0)),
                                           child: Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 8.0,
@@ -412,49 +367,41 @@ class _ReciveDataState extends State<ReciveData> {
                                                   "انتخاب جنس",
                                                   style: TextStyle(
                                                       color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                       fontSize: 20),
                                                 ),
                                               ),
                                               focusColor: Colors.white,
                                               iconEnabledColor: Colors.white,
                                               isExpanded: true,
-                                              icon: const Icon(
-                                                  Icons.arrow_downward),
+                                              icon:
+                                              const Icon(Icons.arrow_downward),
                                               iconSize: 24,
                                               elevation: 16,
                                               style: const TextStyle(
                                                   color: Colors.white),
-                                              dropdownColor:
-                                                  const Color.fromRGBO(
-                                                      152, 116, 100, 1.0),
+                                              dropdownColor: const Color.fromRGBO(
+                                                  152, 116, 100, 1.0),
                                               underline: Container(
                                                 color: Colors.transparent,
                                               ),
                                               onChanged: (String? newValue) {
                                                 setState(() {
-                                                  controller.selectedWaiting =
-                                                      newValue;
+                                                  controller.selectedWaiting = newValue;
 
-                                                  controller.fetchShellData(
-                                                      newValue!);
+                                                  controller.fetchShellData(newValue!);
                                                 });
-                                                print(
-                                                    "${controller.selectedWaiting}");
+                                                print("${controller.selectedWaiting}");
                                               },
                                               items: controller.waitingDropDown
-                                                  .map<
-                                                          DropdownMenuItem<
-                                                              String>>(
+                                                  .map<DropdownMenuItem<String>>(
                                                       (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  alignment:
-                                                      Alignment.centerRight,
-                                                  value: value,
-                                                  child: Text(value),
-                                                );
-                                              }).toList(),
+                                                    return DropdownMenuItem<String>(
+                                                      alignment: Alignment.centerRight,
+                                                      value: value,
+                                                      child: Text(value),
+                                                    );
+                                                  }).toList(),
                                             ),
                                           ),
                                         ),
@@ -466,7 +413,7 @@ class _ReciveDataState extends State<ReciveData> {
                                               color: const Color.fromRGBO(
                                                   152, 116, 100, 1.0),
                                               borderRadius:
-                                                  BorderRadius.circular(20.0)),
+                                              BorderRadius.circular(20.0)),
                                           child: Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 8.0,
@@ -474,53 +421,44 @@ class _ReciveDataState extends State<ReciveData> {
                                                 bottom: 5.0,
                                                 top: 5.0),
                                             child: DropdownButton<String>(
-                                              value:
-                                                  controller.selectedWarehouse,
+                                              value: controller.selectedWarehouse,
                                               hint: const Center(
                                                 child: Text(
                                                   "انتخاب گدام",
                                                   style: TextStyle(
                                                       color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                       fontSize: 20),
                                                 ),
                                               ),
                                               focusColor: Colors.white,
                                               iconEnabledColor: Colors.white,
                                               isExpanded: true,
-                                              icon: const Icon(
-                                                  Icons.arrow_downward),
+                                              icon:
+                                              const Icon(Icons.arrow_downward),
                                               iconSize: 24,
                                               elevation: 16,
                                               style: const TextStyle(
                                                   color: Colors.white),
-                                              dropdownColor:
-                                                  const Color.fromRGBO(
-                                                      152, 116, 100, 1.0),
+                                              dropdownColor: const Color.fromRGBO(
+                                                  152, 116, 100, 1.0),
                                               underline: Container(
                                                 color: Colors.transparent,
                                               ),
                                               onChanged: (String? newValue) {
                                                 setState(() {
-                                                  controller.selectedWarehouse =
-                                                      newValue;
+                                                  controller.selectedWarehouse = newValue;
                                                 });
-                                                controller
-                                                    .fetchShellData(newValue!);
+                                                controller.fetchShellData(newValue!);
                                               },
-                                              items: controller.superMarketNames
-                                                  .map<
-                                                          DropdownMenuItem<
-                                                              String>>(
+                                              items: controller.superMarketNames.map<DropdownMenuItem<String>>(
                                                       (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  alignment:
-                                                      Alignment.centerRight,
-                                                  value: value,
-                                                  child: Text(value),
-                                                );
-                                              }).toList(),
+                                                    return DropdownMenuItem<String>(
+                                                      alignment: Alignment.centerRight,
+                                                      value: value,
+                                                      child: Text(value),
+                                                    );
+                                                  }).toList(),
                                             ),
                                           ),
                                         ),
@@ -532,7 +470,7 @@ class _ReciveDataState extends State<ReciveData> {
                                               color: const Color.fromRGBO(
                                                   152, 116, 100, 1.0),
                                               borderRadius:
-                                                  BorderRadius.circular(20.0)),
+                                              BorderRadius.circular(20.0)),
                                           child: Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 8.0,
@@ -540,95 +478,66 @@ class _ReciveDataState extends State<ReciveData> {
                                                 bottom: 5.0,
                                                 top: 5.0),
                                             child: FutureBuilder(
-                                              future: controller
-                                                          .selectedWarehouse !=
-                                                      null
-                                                  ? controller.fetchShellData(
-                                                      controller
-                                                          .selectedWarehouse!)
-                                                  : null,
-                                              builder: (BuildContext context,
-                                                  AsyncSnapshot snapshot) {
+                                              future: controller.selectedWarehouse != null ? controller.fetchShellData(controller.selectedWarehouse!) : null,
+                                              builder: (BuildContext context, AsyncSnapshot snapshot) {
                                                 return DropdownButton<String>(
-                                                  value:
-                                                      controller.selectedShelf,
+                                                  value: controller.selectedShelf,
                                                   hint: const Center(
                                                     child: Text(
                                                       "انتخاب شلف",
                                                       style: TextStyle(
                                                           color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                          fontWeight: FontWeight.bold,
                                                           fontSize: 20),
                                                     ),
                                                   ),
                                                   focusColor: Colors.white,
-                                                  iconEnabledColor:
-                                                      Colors.white,
+                                                  iconEnabledColor: Colors.white,
                                                   isExpanded: true,
-                                                  icon: const Icon(
-                                                      Icons.arrow_downward),
+                                                  icon: const Icon(Icons.arrow_downward),
                                                   iconSize: 24,
                                                   elevation: 16,
-                                                  style: const TextStyle(
-                                                      color: Colors.white),
-                                                  dropdownColor:
-                                                      const Color.fromRGBO(
-                                                          152, 116, 100, 1.0),
+                                                  style: const TextStyle(color: Colors.white),
+                                                  dropdownColor: const Color.fromRGBO(152, 116, 100, 1.0),
                                                   underline: Container(
                                                     color: Colors.transparent,
                                                   ),
-                                                  onChanged:
-                                                      (String? newValue) {
+                                                  onChanged: (String? newValue) {
                                                     setState(() {
-                                                      controller.selectedShelf =
-                                                          newValue;
+                                                      controller.selectedShelf = newValue;
                                                     });
                                                   },
-                                                  items: controller.shellNames
-                                                      .map<
-                                                              DropdownMenuItem<
-                                                                  String>>(
-                                                          (String value) {
-                                                    return DropdownMenuItem<
-                                                        String>(
-                                                      alignment:
-                                                          Alignment.centerRight,
+                                                  items: controller.shellNames.map<DropdownMenuItem<String>>((String value) {
+                                                    return DropdownMenuItem<String>(
+                                                      alignment: Alignment.centerRight,
                                                       value: value,
                                                       child: Text(value),
                                                     );
                                                   }).toList(),
                                                 );
+
                                               },
                                             ),
                                           ),
                                         ),
+
+
                                         const SizedBox(
                                           height: 20,
                                         ),
                                         MaterialButton(
                                           onPressed: () async {
                                             if (controller.selectedShelf != null) {
-                                              // Call insertData instead of receiveItems
-                                              CircularProgressIndicator();// Show loading spinner
-                                                   await receiveItems();
-                                              setState(() {});
+                                              print("1");
+                                              receiveItems();
+                                              print("2");
                                             } else {
                                               showDialog(
                                                 context: context,
                                                 builder: (BuildContext context) {
                                                   return AlertDialog(
-                                                    title: const Text('خطا',
-                                                        textAlign: TextAlign.right,
-                                                        style: TextStyle(
-                                                            color: Colors.red,
-                                                            fontSize: 40
-                                                        )
-                                                    ),
-                                                    content: const Text(
-                                                      'لطفا یک شلف انتخاب کنید',
-                                                      textAlign: TextAlign.right,
-                                                    ),
+                                                    title: const Text('خطا',textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 40)),
+                                                    content: const  Text('لطفا یک شلف انتخاب کنید',textAlign: TextAlign.right,),
                                                     actions: <Widget>[
                                                       Align(
                                                         alignment: Alignment.centerLeft,
@@ -653,7 +562,7 @@ class _ReciveDataState extends State<ReciveData> {
                                                   Radius.circular(15))),
                                           height: 45,
                                           minWidth: 250,
-                                          child:const Text(
+                                          child: const Text(
                                             "ذخیره",
                                             style: TextStyle(
                                                 fontSize: 20,
@@ -680,15 +589,11 @@ class _ReciveDataState extends State<ReciveData> {
         ));
   }
 
-  Future<void> receiveItems() async {// Show loading spinner
-        // Show loading spinner
+  Future<void> receiveItems() async {
     int Cnumber = int.parse(controllerTypeItemNumber.text);
     int? WarehouseCapacity;
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    QuerySnapshot querySnapshot = await firestore
-        .collection('Warehouse')
-        .where('Name', isEqualTo: controller.selectedWarehouse)
-        .get();
+    QuerySnapshot querySnapshot = await firestore.collection('Warehouse').where('Name', isEqualTo: controller.selectedWarehouse).get();
     for (var doc in querySnapshot.docs) {
       var rs = doc['Number'];
       if (rs is int) {
@@ -698,51 +603,36 @@ class _ReciveDataState extends State<ReciveData> {
       }
     }
 
-    final CollectionReference collectionReference =
-        FirebaseFirestore.instance.collection('Shelf');
-    var snapshots = await collectionReference
-        .where('Warehouse', isEqualTo: controller.selectedWarehouse)
-        .get();
-    var shellNames = snapshots.docs
-        .map((doc) => (doc.data() as Map<String, dynamic>)['Number'] as int?)
-        .where((item) => item != null)
-        .toList()
-        .cast<int>();
+    final CollectionReference collectionReference = FirebaseFirestore.instance.collection('Shelf');
+    var snapshots = await collectionReference.where('Warehouse', isEqualTo: controller.selectedWarehouse).get();
+    var shellNames = snapshots.docs.map((doc) => (doc.data() as Map<String, dynamic>)['Number'] as int?).where((item) => item != null).toList().cast<int>();
     int? rs = shellNames.isNotEmpty ? shellNames[0] : null;
     int ShelfCapacity = rs ?? 0;
-    var lastDoc = await FirebaseFirestore.instance
-        .collection('ReceiveFromIran')
-        .orderBy('id', descending: true)
-        .limit(1)
-        .get();
+    var lastDoc = await FirebaseFirestore.instance.collection('ReceiveFromIran').orderBy('id', descending: true).limit(1).get();
 
     // If there are no documents yet, start with id 0. Otherwise, increment the last id by 1
     int i = lastDoc.docs.isEmpty ? 0 : lastDoc.docs.first.data()['id'] + 1;
     if (WarehouseCapacity! > 0 && ShelfCapacity > 0) {
-      var collection = FirebaseFirestore.instance.collection('waiting');
+      var collection = FirebaseFirestore.instance.collection('ReceiveFromIran');
       var snapshot = await collection.get();
       for (var doc in snapshot.docs) {
-        int castnumber = doc.data()['typeItemNumber'];
-        if (castnumber < Cnumber) {
+        var numberItem = doc.data()['NumberItem'];
+        int castnumber = numberItem is String ? int.parse(numberItem) : numberItem;
+
+        if(castnumber < Cnumber)
+        {
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text("خطای مقدار",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(color: Colors.red, fontSize: 30)),
-                content: Text('تعداد موجود $castnumber عدد است ',
-                    textAlign: TextAlign.right,
-                    style: const TextStyle(color: Colors.black, fontSize: 20)),
+                title: const Text("خطای مقدار", textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 30)),
+                content: Text('تعداد موجود $castnumber عدد است ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black,fontSize: 20)),
                 actions: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
                     child: MaterialButton(
                       color: Colors.green,
-                      child: const Text(
-                        'باشه',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      child: const Text('باشه' ,style: TextStyle(color: Colors.white),),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -752,24 +642,24 @@ class _ReciveDataState extends State<ReciveData> {
               );
             },
           );
-        } else {
+        }
+        else{
           try {
             List<String> itemValues = [];
             for (TextEditingController controller in itemControllers) {
               itemValues.add(controller.text);
             }
-            QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-                .collection('waiting')
+
+            QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('ReceiveFromIran')
                 .where('typeItem', isEqualTo: controller.selectedWaiting)
                 .get();
+
             List<Object?> items = querySnapshot.docs.map((doc) => doc.data()).toList();
-            setState(() {
-              _isLoading = true;
-            });
-            await FirebaseFirestore.instance.collection('ReceiveFromIran').add({
+
+            await FirebaseFirestore.instance.collection('ExitFromWarehouse').add({
               'id': i,
               'typeItem': controller.selectedWaiting,
-              'item': items, // Storing the list of data
+              'item': items,
               'destinationName': controllerDestionationName.text,
               'driverName': controllerDriverName.text,
               'vehicle': controllerVehcle.text,
@@ -780,28 +670,22 @@ class _ReciveDataState extends State<ReciveData> {
               'Warehouse': controller.selectedWarehouse,
               'Shelf': controller.selectedShelf,
             });
+
+            print('Item added successfully');
           } catch (e) {
             print(e.toString());
             showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: const Text("خطا",
-                      textAlign: TextAlign.right,
-                      style: TextStyle(color: Colors.red, fontSize: 30)),
-                  content: Text(e.toString(),
-                      textAlign: TextAlign.right,
-                      style:
-                          const TextStyle(color: Colors.black, fontSize: 20)),
+                  title: const Text("خطای", textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 30)),
+                  content: Text(e.toString(), textAlign: TextAlign.right, style: const TextStyle(color: Colors.black,fontSize: 20)),
                   actions: <Widget>[
                     Align(
                       alignment: Alignment.centerLeft,
                       child: MaterialButton(
                         color: Colors.green,
-                        child: const Text(
-                          'باشه',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        child: const Text('باشه' ,style: TextStyle(color: Colors.white),),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -811,44 +695,22 @@ class _ReciveDataState extends State<ReciveData> {
                 );
               },
             );
-            setState(() {
-              _isLoading = false;
-            });
           }
-// Update warehouse and shelf capacity
-          var querySnapshotW = await firestore
-              .collection('Warehouse')
-              .where('Name', isEqualTo: controller.selectedWarehouse)
-              .get();
+          // Update warehouse and shelf capacity
+          var querySnapshotW = await firestore.collection('Warehouse').where('Name', isEqualTo: controller.selectedWarehouse).get();
           for (var doc in querySnapshotW.docs) {
-            doc.reference.update({'Number': FieldValue.increment(-Cnumber)});
+            doc.reference.update({'Number': FieldValue.increment(Cnumber)});
           }
 
-          var querySnapshot = await firestore
-              .collection('Shelf')
-              .where('Warehouse', isEqualTo: controller.selectedWarehouse)
-              .get();
+          var querySnapshot = await firestore.collection('Shelf').where('Warehouse', isEqualTo: controller.selectedWarehouse).get();
           for (var doc in querySnapshot.docs) {
-            doc.reference.update({'Number': FieldValue.increment(-Cnumber)});
+            doc.reference.update({'Number': FieldValue.increment(Cnumber)});
           }
-
-          int ItemNumberVal = int.parse(controllerTypeItemNumber.text);
-          if (castnumber == ItemNumberVal) {
-// Delete data from 'ReceiveFromIran' table
-            var waitingSnapshot = await firestore
-                .collection('waiting')
-                .where('typeItemNumber', isEqualTo: ItemNumberVal)
-                .get();
-            for (var doc in waitingSnapshot.docs) {
-              doc.reference.delete();
-              print("deleted");
-            }
-          } else if (castnumber > ItemNumberVal) {
-            var querySnapshot = await firestore.collection('waiting').get();
-            for (var doc in querySnapshot.docs) {
-              doc.reference.update(
-                  {'typeItemNumber': FieldValue.increment(-ItemNumberVal)});
-            }
+          // Delete data from 'ReceiveFromIran' table
+          var waitingSnapshot = await firestore.collection('ReceiveFromIran').where('typeItem', isEqualTo: controller.selectedWaiting).get();
+          for (var doc in waitingSnapshot.docs) {
+            doc.reference.delete();
+            print("deleted");
           }
           setState(() {
             fetchWarehouseData();
@@ -858,18 +720,13 @@ class _ReciveDataState extends State<ReciveData> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                content: const Text('موفقانه ذخیره شد',
-                    textAlign: TextAlign.right,
-                    style: TextStyle(color: Colors.black, fontSize: 20)),
+                content: const  Text('موفقانه ذخیره شد', textAlign: TextAlign.right, style: TextStyle(color: Colors.black,fontSize: 20)),
                 actions: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
                     child: MaterialButton(
                       color: Colors.green,
-                      child: const Text(
-                        'باشه',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      child: const Text('باشه' ,style: TextStyle(color: Colors.white),),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -879,9 +736,7 @@ class _ReciveDataState extends State<ReciveData> {
               );
             },
           );
-          setState(() {
-            _isLoading = false;
-          });
+          print("saved");
         }
       }
     } else {
@@ -889,13 +744,8 @@ class _ReciveDataState extends State<ReciveData> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('خطا',
-                textAlign: TextAlign.right,
-                style: TextStyle(color: Colors.red, fontSize: 40)),
-            content: const Text(
-              'دوباره کوشش کنید',
-              textAlign: TextAlign.right,
-            ),
+            title: const Text('خطا',textAlign: TextAlign.right, style: TextStyle(color: Colors.red,fontSize: 40)),
+            content: const  Text('دوباره کوشش کنید',textAlign: TextAlign.right,),
             actions: <Widget>[
               Align(
                 alignment: Alignment.centerLeft,
@@ -911,9 +761,6 @@ class _ReciveDataState extends State<ReciveData> {
           );
         },
       );
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
@@ -921,7 +768,8 @@ class _ReciveDataState extends State<ReciveData> {
     final now = DateTime.now();
     final dt = DateTime(
         now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
-    final format = DateFormat('HH:mm:ss');
+    final format =
+    DateFormat('HH:mm:ss');
     return format.format(dt);
   }
 }

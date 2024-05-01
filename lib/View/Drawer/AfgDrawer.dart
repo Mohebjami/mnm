@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mnm/View/Afg/AfgEmp.dart';
 import 'package:mnm/View/Afg/Receive.dart';
 import 'package:mnm/View/Afg/Warehouse.dart';
-import 'package:mnm/View/Afg/WhData.dart';
 import 'package:mnm/View/Afg/exitFromwarehouse.dart';
 
 class AfgDrawer extends StatefulWidget {
@@ -121,26 +120,6 @@ class _AfgDrawerState extends State<AfgDrawer> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const Warehouse(),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Image(
-                  image: AssetImage("assets/icon/cart.png"),
-                  width: 25,
-                  color: Colors.black,
-                ),
-                title: const Text(
-                  'موجودی در انبار',
-                  style: TextStyle(fontFamily: "Neirizi"),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WhData(),
                     ),
                   );
                 },

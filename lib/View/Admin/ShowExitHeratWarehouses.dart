@@ -1,62 +1,45 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mnm/Controller/Controller.dart';
-import 'package:mnm/View/Drawer/Drawer.dart';
-import 'package:mnm/View/Login.dart';
-import 'package:mnm/View/Shells/Shelf.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:mnm/Controller/Controller.dart';
+import 'package:mnm/View/Admin/ExitReport.dart';
+import 'package:mnm/View/Drawer/Drawer.dart';
 
-class Admin extends StatefulWidget {
-  const Admin({super.key});
+class ShowExitHeratWarehouses extends StatefulWidget {
+  const ShowExitHeratWarehouses({super.key});
 
   @override
-  State<Admin> createState() => _AdminState();
+  State<ShowExitHeratWarehouses> createState() => _ShowExitHeratWarehousesState();
 }
 
-class _AdminState extends State<Admin> {
+class _ShowExitHeratWarehousesState extends State<ShowExitHeratWarehouses> {
   @override
   Widget build(BuildContext context) {
     double fullScreenHeight = MediaQuery.of(context).size.height;
     double fullScreenWidth = MediaQuery.of(context).size.width;
     final Controller controller = Controller();
-
     return Scaffold(
-        backgroundColor: const Color.fromRGBO(215, 203, 185, 1.0),
-        appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(152, 116, 100, 1.0),
-          elevation: 0.0,
-          iconTheme: const IconThemeData(color: Colors.white),
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const ImageIcon(
-                  AssetImage("assets/icon/menu.png"),
-                  size: 24,
-                ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 12.0),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Login(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.logout),
+      backgroundColor: const Color.fromRGBO(215, 203, 185, 1.0),
+      appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(152, 116, 100, 1.0),
+        elevation: 0.0,
+        iconTheme: const IconThemeData(color: Colors.white),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const ImageIcon(
+                AssetImage("assets/icon/menu.png"),
+                size: 24,
               ),
-            ),
-          ],
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
         ),
-        drawer: const myDrawer(),
+      ),
+      drawer: const myDrawer(),
         body: SizedBox(
             height: fullScreenHeight,
             width: fullScreenWidth,
@@ -96,24 +79,32 @@ class _AdminState extends State<Admin> {
                             child: SizedBox(
                               height: 720,
                               child: FutureBuilder<List<Map<String, dynamic>>>(
-                                future: controller.showWarehouse(),
+                                future: controller.exitFromWarehouse(),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<List<Map<String, dynamic>>>snapshot) {
                                   if (snapshot.hasData) {
                                     return Padding(
                                       padding:
-                                          const EdgeInsets.only(top: 100.0),
+                                      const EdgeInsets.only(top: 100.0),
                                       child: ListView.builder(
                                         itemCount: snapshot.data?.length,
                                         itemBuilder: (context, index) {
                                           return Column(
                                             children: [
                                               GestureDetector(
-                                                onTap: () {
+                                                onTap: () async{
+
+
+                                                  var querySnapshot = await FirebaseFirestore.instance.collection('ExitFromWarehouse')
+                                                      .where('typeItem', isEqualTo: snapshot.data![index]['typeItem'].toString()).get();
+                                                  List<Map<String, dynamic>> dataList = [];
+                                                  for (var doc in querySnapshot.docs) {
+                                                    dataList.add(doc.data());
+                                                  }
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                      builder: (context) => Shelf(warehouseName: snapshot.data![index]['Name']),
+                                                      builder: (context) => ExitReport(exit_Report: dataList,),
                                                     ),
                                                   );
                                                 },
@@ -124,35 +115,33 @@ class _AdminState extends State<Admin> {
                                                     color: const Color.fromRGBO(
                                                         152, 116, 100, 1.0),
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            15.0),
+                                                    BorderRadius.circular(
+                                                        15.0),
                                                   ),
                                                   child: Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets
-                                                                .all(12.0),
+                                                        const EdgeInsets
+                                                            .all(12.0),
                                                         child: Container(
                                                           width: 100,
                                                           height: 100,
                                                           decoration:
-                                                              BoxDecoration(
+                                                          BoxDecoration(
                                                             color:
-                                                                Colors.white10,
+                                                            Colors.white10,
                                                             borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8.0),
+                                                            BorderRadius
+                                                                .circular(
+                                                                8.0),
                                                           ),
                                                           child: Center(
                                                             child: Text(
-                                                              snapshot
-                                                                  .data![index]
-                                                                      ['Number']
+                                                              snapshot.data![index]['NumberItem']
                                                                   .toString(),
                                                               style: const TextStyle(
                                                                   color: Colors
@@ -164,16 +153,16 @@ class _AdminState extends State<Admin> {
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets
-                                                                .all(12.0),
+                                                        const EdgeInsets
+                                                            .all(12.0),
                                                         child: SizedBox(
                                                           width: 100,
                                                           height: 100,
                                                           child: Center(
                                                             child: Text(
                                                               snapshot.data?[
-                                                                      index]
-                                                                  ['Name'],
+                                                              index]
+                                                              ['typeItem'],
                                                               style: const TextStyle(
                                                                   color: Colors
                                                                       .white,
@@ -199,10 +188,10 @@ class _AdminState extends State<Admin> {
                                   } else {
                                     return Center(
                                         child: LoadingAnimationWidget.inkDrop(
-                                      color: const Color.fromRGBO(
-                                          152, 116, 100, 1.0),
-                                      size: 50,
-                                    ));
+                                          color: const Color.fromRGBO(
+                                              152, 116, 100, 1.0),
+                                          size: 50,
+                                        ));
                                   }
                                 },
                               ),
@@ -234,6 +223,7 @@ class _AdminState extends State<Admin> {
                   ),
                 ),
               ],
-            )));
+            ))
+    );
   }
 }
