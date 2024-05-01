@@ -17,6 +17,7 @@ class IrEmp extends StatefulWidget {
 
 class _IrEmpState extends State<IrEmp> {
   final Controller controller = Controller();
+  TextEditingController username = TextEditingController();
   TextEditingController controllerSource = TextEditingController();
   TextEditingController controllerDestionation = TextEditingController();
   TextEditingController controllerDestionationName = TextEditingController();

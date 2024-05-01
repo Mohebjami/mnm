@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mnm/Controller/Controller.dart';
 import 'package:mnm/View/Admin/Admin.dart';
 import 'package:mnm/View/Afg/AfgEmp.dart';
 import 'package:mnm/View/Iran/IrEmp.dart';
@@ -11,6 +13,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final Controller controller = Controller();
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Chats Page'),
@@ -107,9 +110,10 @@ class _LoginState extends State<Login> {
                             border: Border.all(color: Colors.white),
                            borderRadius: BorderRadius.circular(15)
                          ),
-                         child: const TextField(
-                          // controller: feeController,
-                          decoration: InputDecoration(
+                         child: TextField(
+                          controller: controller.username,
+                           style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
@@ -126,16 +130,16 @@ class _LoginState extends State<Login> {
                             border: Border.all(color: Colors.white),
                             borderRadius: BorderRadius.circular(15)
                         ),
-                        child: const TextField(
-                          // controller: lastController,
+                        child: TextField(
+                          controller: controller.password,
                           obscureText: true,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,),
                               hintText: "گذر واژه",
                               hintStyle: TextStyle(color: Colors.white)),
                           textAlign: TextAlign.right,
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                       const SizedBox(
@@ -148,28 +152,13 @@ class _LoginState extends State<Login> {
                           onPressed: () {
                             switch (_selectedIndex) {
                               case 0: // Chats
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Admin(),
-                                  ),
-                                );
+                                adminLogin();
                                 break;
                               case 1: // Status
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const AfgEmp(),
-                                  ),
-                                );
+                                heratEmpLogin();
                                 break;
                               case 2: // Calls
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const IrEmp(),
-                                  ),
-                                );
+                                iranEmpLogin();
                                 break;
                               default:
                                 break;
@@ -199,4 +188,242 @@ class _LoginState extends State<Login> {
       ),
     ));
   }
+
+  void adminLogin()async{
+    int i =0;
+    var data;
+    bool correct = false;
+    var userName = controller.username.text;
+    var pass = controller.password.text;
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Accounts').get();
+    while(i<snapshot.docs.length)
+      {
+        data = snapshot.docs[i].data() as Map<String, dynamic>;
+        if(data['username'] == userName && data['password'] == pass)
+          {
+            setState(() {
+              correct = true;
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Admin(),
+              ),
+            );
+          }
+        i++;
+      }
+    if(correct == false){
+      print("!");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.transparent,
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  height: 350,
+                  width: 350,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                      image: DecorationImage(
+                        image: AssetImage("assets/icon/pass.png"),
+                        fit: BoxFit.contain,
+                      )
+                  ),
+                ),
+                Container(
+                  width: 350,
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      const Text('نام کابری یا گذرواژه اشتباه است', style: TextStyle(fontSize: 20,fontFamily: "LilitaOne")),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: 220,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orangeAccent,
+                          ),
+                          child: const Text('دوباره امتحان کنید!', style: TextStyle(color: Colors.white,fontFamily: "LilitaOne")),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  }
+  void heratEmpLogin()async{
+    int i =0;
+    var data;
+    bool correct = false;
+    var userName = controller.username.text;
+    var pass = controller.password.text;
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('AfgEmp').get();
+    while(i<snapshot.docs.length)
+      {
+        data = snapshot.docs[i].data() as Map<String, dynamic>;
+        if(data['username'] == userName && data['password'] == pass)
+          {
+            setState(() {
+              correct = true;
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AfgEmp(),
+              ),
+            );
+          }
+        i++;
+      }
+    if(correct == false){
+      print("!");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.transparent,
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  height: 350,
+                  width: 350,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                      image: DecorationImage(
+                        image: AssetImage("assets/icon/pass.png"),
+                        fit: BoxFit.contain,
+                      )
+                  ),
+                ),
+                Container(
+                  width: 350,
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      const Text('نام کابری یا گذرواژه اشتباه است', style: TextStyle(fontSize: 20,fontFamily: "LilitaOne")),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: 220,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orangeAccent,
+                          ),
+                          child: const Text('دوباره امتحان کنید!', style: TextStyle(color: Colors.white,fontFamily: "LilitaOne")),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  }
+  void iranEmpLogin()async{
+    int i =0;
+    var data;
+    bool correct = false;
+    var userName = controller.username.text;
+    var pass = controller.password.text;
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('IranEmp').get();
+    while(i<snapshot.docs.length)
+      {
+        data = snapshot.docs[i].data() as Map<String, dynamic>;
+        if(data['username'] == userName && data['password'] == pass)
+          {
+            setState(() {
+              correct = true;
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const IrEmp(),
+              ),
+            );
+          }
+        i++;
+      }
+    if(correct == false){
+      print("!");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.transparent,
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  height: 350,
+                  width: 350,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                      image: DecorationImage(
+                        image: AssetImage("assets/icon/pass.png"),
+                        fit: BoxFit.contain,
+                      )
+                  ),
+                ),
+                Container(
+                  width: 350,
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      const Text('نام کابری یا گذرواژه اشتباه است', style: TextStyle(fontSize: 20,fontFamily: "LilitaOne")),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: 220,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orangeAccent,
+                          ),
+                          child: const Text('دوباره امتحان کنید!', style: TextStyle(color: Colors.white,fontFamily: "LilitaOne")),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  }
+
+
+
 }

@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class Controller {
+
+  TextEditingController username = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+
+
   TextEditingController controllerUS = TextEditingController();
   TextEditingController controllerPS = TextEditingController();
   TextEditingController controllerWarehouseName = TextEditingController();

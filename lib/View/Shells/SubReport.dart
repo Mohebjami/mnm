@@ -261,7 +261,6 @@ class SubReport extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(child: Text("${snapshot.data?[index]['typeItemNumber']}", textAlign: TextAlign.right,style: const TextStyle(color: Colors.white, fontSize: 20),), ),
-
                         ),
                         const SizedBox(width: 2,),
                         Container(
